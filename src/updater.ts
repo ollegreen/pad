@@ -1,9 +1,10 @@
-import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
-const REMOTE_CONFIG_URL =
-  "https://raw.githubusercontent.com/ollegreen/pad/main/src-tauri/tauri.conf.json";
+declare const __GIT_SHA__: string;
+
+const REMOTE_SHA_URL =
+  "https://api.github.com/repos/ollegreen/pad/commits/main";
 
 let toastEl: HTMLDivElement | null = null;
 let dismissTimer: ReturnType<typeof setTimeout> | null = null;
@@ -62,19 +63,16 @@ async function checkForUpdates() {
   showToast("Checking for updates...");
 
   try {
-    const [currentVersion, resp] = await Promise.all([
-      getVersion(),
-      fetch(REMOTE_CONFIG_URL),
-    ]);
-
+    const resp = await fetch(REMOTE_SHA_URL, {
+      headers: { Accept: "application/vnd.github.sha" },
+    });
     if (!resp.ok) throw new Error("fetch failed");
-    const remoteConfig = await resp.json();
-    const remoteVersion: string = remoteConfig.version;
+    const remoteSha = (await resp.text()).trim();
 
-    if (currentVersion === remoteVersion) {
-      showToast(`Up to date (v${currentVersion})`, { autoDismiss: 3000 });
+    if (__GIT_SHA__ === remoteSha) {
+      showToast("You're on the latest version", { autoDismiss: 3000 });
     } else {
-      showToast(`Update available: v${currentVersion} → v${remoteVersion}`, {
+      showToast("Update available", {
         action: "Update Now",
         onAction: performUpdate,
       });
