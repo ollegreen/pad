@@ -51,7 +51,7 @@ export const padTheme = EditorView.theme(
     },
     // Code block line decoration
     ".cm-codeblock-line": {
-      backgroundColor: "#1e1e1e",
+      backgroundColor: "var(--pad-code-bg, #2d2d2d)",
     },
     // Checkbox widget — sized relative to font, accent via CSS var
     ".cm-checkbox": {
@@ -91,7 +91,7 @@ export const padTheme = EditorView.theme(
       width: "0.35em",
       height: "0.35em",
       borderRadius: "50%",
-      backgroundColor: "#ffffff",
+      backgroundColor: "var(--pad-text, #ffffff)",
       verticalAlign: "0.15em",
       marginRight: "0.4em",
     },
@@ -149,26 +149,26 @@ export const padTheme = EditorView.theme(
 // Bold/italic get weight/style but same color. Code in blocks gets subtle highlighting.
 export const padHighlighting = syntaxHighlighting(
   HighlightStyle.define([
-    { tag: tags.heading1, fontSize: "1.6em", fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.heading2, fontSize: "1.3em", fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.heading3, fontSize: "1.1em", fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.heading4, fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.heading5, fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.heading6, fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.strong, fontWeight: "bold", color: "#ffffff" },
-    { tag: tags.emphasis, fontStyle: "italic", color: "#ffffff" },
+    { tag: tags.heading1, fontSize: "1.6em", fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.heading2, fontSize: "1.3em", fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.heading3, fontSize: "1.1em", fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.heading4, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.heading5, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.heading6, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.strong, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.emphasis, fontStyle: "italic", color: "var(--pad-text, #ffffff)" },
     { tag: tags.strikethrough, textDecoration: "line-through", color: "#808080" },
-    { tag: tags.monospace, backgroundColor: "#1e1e1e", borderRadius: "3px", color: "#ffffff" },
+    { tag: tags.monospace, backgroundColor: "var(--pad-inline-code-bg, #2d2d2d)", borderRadius: "3px", color: "var(--pad-text, #ffffff)" },
     { tag: tags.link, color: "#e8912d" },
     { tag: tags.url, color: "#e8912d" },
-    { tag: tags.quote, color: "#ffffff" },
-    { tag: tags.list, color: "#ffffff" },
+    { tag: tags.quote, color: "var(--pad-text, #ffffff)" },
+    { tag: tags.list, color: "var(--pad-text, #ffffff)" },
     { tag: tags.processingInstruction, color: "#666666" },
     { tag: tags.meta, color: "#666666" },
     // Code block internals — subtle syntax coloring
-    { tag: tags.comment, color: "#6a9955" },
-    { tag: tags.string, color: "#ce9178" },
-    { tag: tags.keyword, color: "#569cd6" },
-    { tag: tags.number, color: "#b5cea8" },
+    { tag: tags.comment, color: "var(--pad-syn-comment, #6a9955)" },
+    { tag: tags.string, color: "var(--pad-syn-string, #ce9178)" },
+    { tag: tags.keyword, color: "var(--pad-syn-keyword, #569cd6)" },
+    { tag: tags.number, color: "var(--pad-syn-number, #b5cea8)" },
   ])
 );

@@ -213,7 +213,10 @@ function buildDecorations(view: EditorView): DecorationSet {
             const editing = cursorOn(view, node.from, node.to);
             for (let i = startLine; i <= endLine; i++) {
               const line = view.state.doc.line(i);
-              decs.push(Decoration.line({ class: "cm-codeblock-line" }).range(line.from));
+              let cls = "cm-codeblock-line";
+              if (i === startLine) cls += " cm-codeblock-first";
+              if (i === endLine) cls += " cm-codeblock-last";
+              decs.push(Decoration.line({ class: cls }).range(line.from));
             }
             if (!editing) {
               // Hide opening fence line content (but not the newline — CM6 forbids cross-line replace from plugins)
