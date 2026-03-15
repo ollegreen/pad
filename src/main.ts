@@ -79,7 +79,7 @@ applyFontSize(view);
 applyAccentColor();
 applyFont();
 if (isCentered()) {
-  view.dom.classList.add("centered-mode");
+  document.documentElement.classList.add("centered-mode");
 }
 initCloseHandler();
 initImagePaste(view);

@@ -190,7 +190,7 @@ export function scheduleCenterUpdate(view: EditorView) {
 export function toggleCenter(view: EditorView) {
   centered = !centered;
   localStorage.setItem(CENTERED_KEY, centered ? "1" : "");
-  view.dom.classList.toggle("centered-mode", centered);
+  document.documentElement.classList.toggle("centered-mode", centered);
   updateCenterPadding(view);
 }
 
