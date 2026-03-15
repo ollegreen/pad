@@ -241,14 +241,12 @@ function showWelcome(): void {
     <div class="welcome-card">
       <h1>Welcome to Pad</h1>
       <p>Name your pad folder to get started.</p>
-      <input type="text" id="welcome-folder-name" placeholder="pads" spellcheck="false" />
-      <button id="welcome-create-folder">Choose Location</button>
-      <div class="welcome-divider"></div>
-      <p class="welcome-hint">First time?</p>
       <label class="welcome-checkbox" id="welcome-onboarding">
         <span class="welcome-check-box"></span>
         Enable onboarding
       </label>
+      <input type="text" id="welcome-folder-name" placeholder="pads" spellcheck="false" />
+      <button id="welcome-create-folder">Choose Location</button>
     </div>
     <p class="welcome-footer">By: <a href="https://github.com/ollegreen/pad" target="_blank">Olle Green</a></p>
   `;

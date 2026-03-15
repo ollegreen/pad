@@ -55,32 +55,27 @@ html, body, #editor {
   background: #444;
 }
 
-.welcome-divider {
-  width: 40px;
-  height: 1px;
-  background: #3a3a3a;
-  margin: 1.5rem auto;
-}
-
-.welcome-hint {
-  font-size: 0.8rem;
-  color: #666;
-  margin-bottom: 0.6rem;
-}
 
 .welcome-checkbox {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
-  color: #888;
+  color: #aaa;
   cursor: pointer;
   user-select: none;
-  transition: color 0.15s;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 0 auto 1.2rem;
 }
 
 .welcome-checkbox:hover {
-  color: #bbb;
+  color: #ddd;
+  background: #323232;
+  border-color: #4a4a4a;
 }
 
 .welcome-check-box {
@@ -128,7 +123,7 @@ html, body, #editor {
 }
 
 .welcome-footer a {
-  color: #e8912d;
+  color: #39e75f;
   text-decoration: none;
 }
 
