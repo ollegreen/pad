@@ -4,8 +4,8 @@ use tauri::menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu};
 #[tauri::command]
 async fn run_update() -> Result<String, String> {
   tauri::async_runtime::spawn_blocking(|| {
-    let output = std::process::Command::new("bash")
-      .args(["-c", "source ~/.zprofile 2>/dev/null; source ~/.bash_profile 2>/dev/null; source $HOME/.cargo/env 2>/dev/null; curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash"])
+    let output = std::process::Command::new("/bin/zsh")
+      .args(["--login", "-c", "curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | zsh"])
       .output()
       .map_err(|e| e.to_string())?;
     if output.status.success() {

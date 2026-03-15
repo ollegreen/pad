@@ -88,8 +88,9 @@ async function performUpdate() {
   try {
     await invoke("run_update");
     showToast("Update complete! Restart Pad to apply.", { autoDismiss: 8000 });
-  } catch {
-    showToast("Update failed. Try again later.", { autoDismiss: 5000 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    showToast(`Update failed: ${msg}`, { autoDismiss: 8000 });
   }
 }
 
