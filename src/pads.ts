@@ -361,6 +361,25 @@ export async function newPad(): Promise<void> {
   });
 }
 
+export async function newPadBefore(): Promise<void> {
+  await withLock(async () => {
+    await saveCurrent();
+    clearSaveTimer();
+
+    const insertAt = currentPadNum;
+    await scanPads();
+
+    for (let i = totalPads; i >= insertAt; i--) {
+      await rename(padPath(i), padPath(i + 1));
+    }
+
+    await writeTextFile(padPath(insertAt), "");
+    totalPads += 1;
+
+    await loadPad(insertAt);
+  });
+}
+
 export async function deletePad(): Promise<void> {
   await withLock(async () => {
     if (totalPads <= 1) return; // don't delete the last pad

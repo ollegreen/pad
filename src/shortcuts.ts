@@ -1,7 +1,7 @@
 import { EditorView, keymap } from "@codemirror/view";
 import { Compartment } from "@codemirror/state";
 import { openFile, saveFile, saveFileAs } from "./fileio";
-import { newPad, nextPad, prevPad } from "./pads";
+import { newPad, newPadBefore, nextPad, prevPad } from "./pads";
 
 const STORAGE_KEY = "markdownpad-shortcuts";
 const FONT_SIZE_KEY = "markdownpad-font-size";
@@ -130,6 +130,15 @@ export const defaultShortcuts: ShortcutAction[] = [
     defaultKey: "Mod-n",
     run: () => {
       newPad();
+      return true;
+    },
+  },
+  {
+    id: "newPadBefore",
+    label: "New Pad Before",
+    defaultKey: "Mod-Shift-n",
+    run: () => {
+      newPadBefore();
       return true;
     },
   },

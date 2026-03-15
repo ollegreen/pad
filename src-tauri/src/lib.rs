@@ -45,7 +45,7 @@ pub fn run() {
       ])?;
 
       let file_menu = Submenu::with_items(app, "File", true, &[
-        &MenuItem::with_id(app, "new_pad_set", "New Pad Set", true, Some("CmdOrCtrl+Shift+N"))?,
+        &MenuItem::with_id(app, "new_pad_set", "New Pad Set", true, Some("CmdOrCtrl+Alt+N"))?,
         &MenuItem::with_id(app, "open_pad_set", "Open Pad Set", true, Some("CmdOrCtrl+Shift+O"))?,
         &MenuItem::with_id(app, "add_onboarding", "Add Onboarding Pads", true, None::<&str>)?,
         &PredefinedMenuItem::separator(app)?,
