@@ -190,7 +190,9 @@ html, body, #editor {
 }
 
 .centered-mode .cm-content {
-  text-align: center !important;
+  width: fit-content;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .centered-mode .cm-rendered-image {
