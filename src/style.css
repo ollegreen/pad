@@ -192,10 +192,13 @@ html, body, #editor {
   color: #ccc;
 }
 
+.centered-mode .cm-scroller {
+  justify-content: center;
+}
+
 .centered-mode .cm-content {
+  flex-grow: 0 !important;
   width: fit-content;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 .centered-mode .cm-rendered-image {
@@ -213,11 +216,14 @@ html, body, #editor {
   display: none !important;
 }
 
+.presentation-mode .cm-scroller {
+  justify-content: center;
+}
+
 .presentation-mode .cm-content {
   caret-color: transparent !important;
+  flex-grow: 0 !important;
   width: fit-content;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 /* Theme-switching CSS custom properties */
