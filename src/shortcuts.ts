@@ -164,7 +164,8 @@ export function isCentered(): boolean {
 
 export function updateCenterPadding(view: EditorView) {
   const content = view.contentDOM;
-  if (!centered) {
+  const shouldCenter = centered || view.dom.classList.contains("presentation-mode");
+  if (!shouldCenter) {
     content.style.paddingTop = "";
     content.style.paddingBottom = "";
     return;

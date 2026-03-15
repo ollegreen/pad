@@ -92,7 +92,7 @@ async function loadPad(n: number): Promise<void> {
     changes: { from: 0, to: editorView.state.doc.length, insert: content },
   });
   suppressDirty = false;
-  if (isCentered()) updateCenterPadding(editorView);
+  if (isCentered() || editorView.dom.classList.contains("presentation-mode")) updateCenterPadding(editorView);
 
   currentPadNum = n;
   localStorage.setItem(PAD_KEY, String(n));

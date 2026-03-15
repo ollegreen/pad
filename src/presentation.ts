@@ -4,6 +4,7 @@ import {
   shortcutCompartment,
   buildKeymap,
   setExtraBindings,
+  updateCenterPadding,
 } from "./shortcuts";
 import { nextPad, prevPad, refreshPadTitle } from "./pads";
 
@@ -39,6 +40,7 @@ export function togglePresentationMode(view: EditorView): void {
   });
 
   view.dom.classList.toggle("presentation-mode", presentationMode);
+  updateCenterPadding(view);
   refreshPadTitle();
 
   if (!presentationMode) {

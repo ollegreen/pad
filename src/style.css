@@ -212,6 +212,9 @@ html, body, #editor {
 
 .presentation-mode .cm-content {
   caret-color: transparent !important;
+  width: fit-content;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* Theme-switching CSS custom properties */
