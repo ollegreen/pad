@@ -32,6 +32,8 @@ pub fn run() {
         &MenuItem::with_id(app, "open_pad_set", "Open Pad Set", true, Some("CmdOrCtrl+Shift+O"))?,
         &MenuItem::with_id(app, "add_onboarding", "Add Onboarding Pads", true, None::<&str>)?,
         &PredefinedMenuItem::separator(app)?,
+        &MenuItem::with_id(app, "check_updates", "Check for Updates…", true, None::<&str>)?,
+        &PredefinedMenuItem::separator(app)?,
         &CheckMenuItem::with_id(app, "pain_mode", "Pain Mode", true, false, None::<&str>)?,
       ])?;
 
@@ -56,6 +58,11 @@ pub fn run() {
         "open_pad_set" => { let _ = app.emit("menu-open-pad-set", ()); },
         "add_onboarding" => { let _ = app.emit("menu-add-onboarding", ()); },
         "pain_mode" => { let _ = app.emit("menu-pain-mode", ()); },
+        "check_updates" => {
+          let _ = std::process::Command::new("osascript")
+            .args(["-e", "tell application \"Terminal\" to do script \"curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash\""])
+            .spawn();
+        },
         _ => {}
       }
     })
