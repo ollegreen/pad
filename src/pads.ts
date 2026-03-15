@@ -136,6 +136,8 @@ Just type — it's markdown.
 **Bold**, *italic*, ~~strikethrough~~, # headings, > quotes.
 
 Your work auto-saves. Click formatted text to see the raw markdown.
+
+**Option + →** to continue.
 `,
   // pad_3 — Keyboard overview
   `### Keyboard shortcuts
@@ -148,7 +150,7 @@ Your work auto-saves. Click formatted text to see the raw markdown.
 **Cmd + P** — presentation mode
 **Cmd + ,** — settings
 
-Let's walk through each of these.
+Let's walk through each of these. **Option + →** to continue.
 `,
   // pad_4 — Pads & navigation
   `### Pads
@@ -158,7 +160,7 @@ Each pad is a separate markdown file.
 **Cmd + N** — create a new pad
 **Option + ←/→** — move between pads
 
-They auto-save to your pad folder.
+They auto-save to your pad folder. **Option + →** to continue.
 `,
   // pad_5 — Todos
   `### Todos
@@ -168,6 +170,8 @@ They auto-save to your pad folder.
 - [ ] Great for tracking tasks
 
 **Cmd + T** inserts a new todo.
+
+**Option + →** to continue.
 `,
   // pad_6 — Images
   `### Images
@@ -177,6 +181,8 @@ Paste images directly from your clipboard.
 They save as files in your pad folder.
 
 ![](lars_image.jpg)
+
+**Option + →** to continue.
 `,
   // pad_7 — Centered mode
   `### Centered mode
@@ -186,6 +192,8 @@ They save as files in your pad folder.
 Centers text, images, the lot. Try it now.
 
 Press **Option + C** again to toggle back.
+
+**Option + →** to continue.
 `,
   // pad_8 — Presentation mode
   `### Presentation mode
@@ -193,6 +201,8 @@ Press **Option + C** again to toggle back.
 **Cmd + P** turns your pads into slides.
 
 Arrow keys navigate. **Cmd + P** again to exit.
+
+**Option + →** to continue.
 `,
   // pad_9 — You're all set
   `### Make it yours
