@@ -10,7 +10,7 @@
 
 <!-- screenshots go here -->
 
-## ✨ Features
+## 🐱 Features
 
 - **Distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
 - **Presentation mode** — your pads become fullscreen slides with `Cmd+P`
