@@ -6,6 +6,8 @@ pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_dialog::init())
     .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_updater::Builder::new().build())
+    .plugin(tauri_plugin_process::init())
     .setup(|app| {
       if cfg!(debug_assertions) {
         app.handle().plugin(
@@ -33,6 +35,8 @@ pub fn run() {
         &MenuItem::with_id(app, "add_onboarding", "Add Onboarding Pads", true, None::<&str>)?,
         &PredefinedMenuItem::separator(app)?,
         &CheckMenuItem::with_id(app, "pain_mode", "Pain Mode", true, false, None::<&str>)?,
+        &PredefinedMenuItem::separator(app)?,
+        &MenuItem::with_id(app, "check_for_updates", "Check for Updates…", true, None::<&str>)?,
       ])?;
 
       let edit_menu = Submenu::with_items(app, "Edit", true, &[
@@ -56,6 +60,7 @@ pub fn run() {
         "open_pad_set" => { let _ = app.emit("menu-open-pad-set", ()); },
         "add_onboarding" => { let _ = app.emit("menu-add-onboarding", ()); },
         "pain_mode" => { let _ = app.emit("menu-pain-mode", ()); },
+        "check_for_updates" => { let _ = app.emit("menu-check-for-updates", ()); },
         _ => {}
       }
     })

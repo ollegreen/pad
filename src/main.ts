@@ -29,6 +29,7 @@ import {
   togglePresentationMode,
 } from "./presentation";
 import { initImagePaste } from "./images";
+import { initUpdater } from "./updater";
 
 const state = EditorState.create({
   doc: "",
@@ -80,6 +81,7 @@ applyAccentColor();
 applyFont();
 initCloseHandler();
 initImagePaste(view);
+initUpdater();
 initPadSystem(view).catch(console.error);
 
 // Keep centered mode padding in sync with window resizes

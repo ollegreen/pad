@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Pad",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "identifier": "com.pad.app",
   "build": {
     "frontendDist": "../dist",
@@ -36,5 +36,13 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/ollegreen/pad/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IERCOUIxMDFCRUQ5NDQ1ODcKUldTSFJaVHRHeENiMjhQNm56cDdnQll2Y1BycXZFWWJXOEdPSlR1Rkpvb2JydW1BUEFwd1krSCsK"
+    }
   }
 }
