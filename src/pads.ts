@@ -126,7 +126,7 @@ const ONBOARDING_PADS: string[] = [
 
 A minimal markdown editor. Let's get you started.
 
-Press **Alt + →** to continue.
+Press **Option + →** to continue.
 `,
   // pad_2 — Writing basics
   `### Writing
@@ -140,11 +140,11 @@ Your work auto-saves. Click formatted text to see the raw markdown.
   // pad_3 — Keyboard overview
   `### Keyboard shortcuts
 
-**Alt + ←/→** — navigate between pads
+**Option + ←/→** — navigate between pads
 **Cmd + N** — new pad
 **Cmd + T** — insert todo
 **Cmd + B / I** — bold / italic
-**Alt + C** — centered mode
+**Option + C** — centered mode
 **Cmd + P** — presentation mode
 **Cmd + ,** — settings
 
@@ -156,7 +156,7 @@ Let's walk through each of these.
 Each pad is a separate markdown file.
 
 **Cmd + N** — create a new pad
-**Alt + ←/→** — move between pads
+**Option + ←/→** — move between pads
 
 They auto-save to your pad folder.
 `,
@@ -181,11 +181,11 @@ They save as files in your pad folder.
   // pad_7 — Centered mode
   `### Centered mode
 
-**Alt + C** toggles centered mode.
+**Option + C** toggles centered mode.
 
 Centers text, images, the lot. Try it now.
 
-Press **Alt + C** again to toggle back.
+Press **Option + C** again to toggle back.
 `,
   // pad_8 — Presentation mode
   `### Presentation mode
