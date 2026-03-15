@@ -199,6 +199,7 @@ html, body, #editor {
 .centered-mode .cm-content {
   flex-grow: 0 !important;
   width: fit-content;
+  min-width: 0 !important;
 }
 
 .centered-mode .cm-rendered-image {
@@ -224,6 +225,7 @@ html, body, #editor {
   caret-color: transparent !important;
   flex-grow: 0 !important;
   width: fit-content;
+  min-width: 0 !important;
 }
 
 /* Theme-switching CSS custom properties */

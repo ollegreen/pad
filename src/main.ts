@@ -27,6 +27,7 @@ import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad } from "./pa
 import {
   readOnlyCompartment,
   togglePresentationMode,
+  isPresentationMode,
 } from "./presentation";
 import { initImagePaste } from "./images";
 import { initUpdater } from "./updater";
@@ -64,7 +65,7 @@ const state = EditorState.create({
         markDirty();
         scheduleSave();
       }
-      if (isCentered() && (update.docChanged || update.geometryChanged)) {
+      if ((isCentered() || isPresentationMode()) && (update.docChanged || update.geometryChanged)) {
         scheduleCenterUpdate(update.view);
       }
     }),
@@ -87,9 +88,9 @@ initImagePaste(view);
 initPadSystem(view).catch(console.error);
 initUpdater();
 
-// Keep centered mode padding in sync with window resizes
+// Keep centered/presentation mode padding in sync with window resizes
 new ResizeObserver(() => {
-  if (isCentered()) scheduleCenterUpdate(view);
+  if (isCentered() || isPresentationMode()) scheduleCenterUpdate(view);
 }).observe(view.scrollDOM);
 
 // Prevent webview defaults and handle global shortcuts
