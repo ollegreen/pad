@@ -6,9 +6,11 @@ echo "  pad installer"
 echo "  ────────────────"
 echo ""
 
-# If not inside the pad repo, clone it
+# If not inside the pad repo, clone into a temp dir (cleaned up at the end)
+CLEANUP=""
 if [ ! -f "src-tauri/tauri.conf.json" ]; then
   CLONE_DIR=$(mktemp -d)
+  CLEANUP="$CLONE_DIR"
   echo "  Cloning pad..."
   git clone --depth 1 https://github.com/ollegreen/pad.git "$CLONE_DIR"
   cd "$CLONE_DIR"
@@ -53,6 +55,11 @@ pnpm tauri build
 
 # Copy to Applications
 cp -rf src-tauri/target/release/bundle/macos/Pad.app /Applications/Pad.app
+
+# Clean up temp build dir
+if [ -n "$CLEANUP" ]; then
+  rm -rf "$CLEANUP"
+fi
 
 echo ""
 echo "  ✓ Done! Pad is in your Applications folder."
