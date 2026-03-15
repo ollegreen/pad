@@ -180,6 +180,8 @@ Paste images directly from your clipboard.
 
 They save as files in your pad folder.
 
+## This is Lars enjoying some ostbågar.
+
 ![](lars_image.jpg)
 
 **Option + →** to continue.
