@@ -242,80 +242,100 @@ function showWelcome(): void {
   overlay.innerHTML = `
     <div class="welcome-card">
       <h1>Welcome to Pad</h1>
-      <p>Name your pad folder to get started.</p>
+      <p>A minimal markdown editor.</p>
       <label class="welcome-checkbox" id="welcome-onboarding">
         <span class="welcome-check-box"></span>
         Enable onboarding
       </label>
-      <input type="text" id="welcome-folder-name" placeholder="pads" spellcheck="false" />
-      <button id="welcome-create-folder">Choose Location</button>
+      <div class="welcome-actions">
+        <button id="welcome-create">Create Pads</button>
+        <button id="welcome-open" class="btn-secondary">Open Pads</button>
+      </div>
     </div>
     <p class="welcome-footer">By: <a href="https://github.com/ollegreen/pad" target="_blank">Olle Green</a></p>
   `;
   document.body.appendChild(overlay);
 
-  const input = document.getElementById("welcome-folder-name") as HTMLInputElement;
-
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") pickLocationAndCreate(overlay, false);
+  const onboardingCheckbox = document.getElementById("welcome-onboarding")!;
+  onboardingCheckbox.addEventListener("click", () => {
+    onboardingCheckbox.classList.toggle("checked");
   });
 
-  document.getElementById("welcome-create-folder")!.addEventListener("click", () => {
-    pickLocationAndCreate(overlay, false);
+  document.getElementById("welcome-create")!.addEventListener("click", () => {
+    const withOnboarding = onboardingCheckbox.classList.contains("checked");
+    createNewPads(overlay, withOnboarding);
   });
 
-  document.getElementById("welcome-onboarding")!.addEventListener("click", () => {
-    const checkbox = document.getElementById("welcome-onboarding")!;
-    checkbox.classList.add("checked");
-    setTimeout(() => pickLocationAndCreate(overlay, true), 400);
+  document.getElementById("welcome-open")!.addEventListener("click", () => {
+    const withOnboarding = onboardingCheckbox.classList.contains("checked");
+    openExistingPads(overlay, withOnboarding);
   });
-
-  input.focus();
 }
 
-async function pickLocationAndCreate(overlay: HTMLElement, withOnboarding: boolean): Promise<void> {
-  const input = document.getElementById("welcome-folder-name") as HTMLInputElement;
-  const name = input.value.trim() || "pads";
+async function writeOnboardingContent(path: string): Promise<void> {
+  try {
+    const resp = await fetch("/lars_image.jpg");
+    const buf = await resp.arrayBuffer();
+    await writeFile(`${path}/lars_image.jpg`, new Uint8Array(buf));
+  } catch {}
 
-  const selected = await open({ directory: true });
-  if (!selected) {
-    // User cancelled the picker — reset onboarding checkbox if needed
-    document.getElementById("welcome-onboarding")?.classList.remove("checked");
-    return;
+  // Count existing pads to append after them
+  const entries = await readDir(path);
+  let existingCount = 0;
+  for (const entry of entries) {
+    if (entry.name && PAD_REGEX.test(entry.name)) existingCount++;
   }
 
+  for (let i = 0; i < ONBOARDING_PADS.length; i++) {
+    await writeTextFile(`${path}/pad_${existingCount + i + 1}.md`, ONBOARDING_PADS[i]);
+  }
+}
+
+async function finishWelcome(overlay: HTMLElement, path: string): Promise<void> {
+  folderPath = path;
+  localStorage.setItem(FOLDER_KEY, path);
+  await scanPads();
+
+  if (totalPads === 0) {
+    await writeTextFile(`${path}/pad_1.md`, ONBOARDING);
+    await scanPads();
+  }
+
+  overlay.remove();
+  document.getElementById("editor")!.style.display = "";
+  await loadPad(1);
+  editorView?.focus();
+}
+
+async function createNewPads(overlay: HTMLElement, withOnboarding: boolean): Promise<void> {
+  const selected = await open({ directory: true });
+  if (!selected) return;
+
   const parentPath = typeof selected === "string" ? selected : selected;
-  const path = `${parentPath}/${name}`;
+  const path = `${parentPath}/pads`;
 
   if (!(await exists(path))) {
     await mkdir(path);
   }
 
-  folderPath = path;
-  localStorage.setItem(FOLDER_KEY, path);
-
   if (withOnboarding) {
-    try {
-      const resp = await fetch("/lars_image.jpg");
-      const buf = await resp.arrayBuffer();
-      await writeFile(`${path}/lars_image.jpg`, new Uint8Array(buf));
-    } catch {}
-
-    for (let i = 0; i < ONBOARDING_PADS.length; i++) {
-      await writeTextFile(`${path}/pad_${i + 1}.md`, ONBOARDING_PADS[i]);
-    }
-  } else {
-    const firstPad = `${path}/pad_1.md`;
-    if (!(await exists(firstPad))) {
-      await writeTextFile(firstPad, ONBOARDING);
-    }
+    await writeOnboardingContent(path);
   }
 
-  await scanPads();
-  overlay.remove();
-  document.getElementById("editor")!.style.display = "";
-  await loadPad(1);
-  editorView?.focus();
+  await finishWelcome(overlay, path);
+}
+
+async function openExistingPads(overlay: HTMLElement, withOnboarding: boolean): Promise<void> {
+  const selected = await open({ directory: true });
+  if (!selected) return;
+
+  const path = typeof selected === "string" ? selected : selected;
+
+  if (withOnboarding) {
+    await writeOnboardingContent(path);
+  }
+
+  await finishWelcome(overlay, path);
 }
 
 // --- Pad Operations ---
