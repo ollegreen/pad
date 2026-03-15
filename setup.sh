@@ -6,6 +6,14 @@ echo "  pad installer"
 echo "  ────────────────"
 echo ""
 
+# If not inside the pad repo, clone it
+if [ ! -f "src-tauri/tauri.conf.json" ]; then
+  CLONE_DIR=$(mktemp -d)
+  echo "  Cloning pad..."
+  git clone --depth 1 https://github.com/ollegreen/pad.git "$CLONE_DIR"
+  cd "$CLONE_DIR"
+fi
+
 # Homebrew
 if ! command -v brew &>/dev/null; then
   echo "  Installing Homebrew..."

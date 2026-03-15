@@ -30,13 +30,11 @@ Key modules:
 - `decorations.ts` — Custom CodeMirror widgets (checkboxes, links, images) built on Lezer syntax tree parsing
 - `settings.ts` — Settings modal (accent color, font, key rebinding, pain mode)
 - `images.ts` — Paste-to-insert images with blob URL caching
-- `updater.ts` — Auto-update checker via Tauri updater plugin
-
 **Patterns to know:**
 - `suppressDirty` flag prevents marking editor as dirty during programmatic content changes (e.g., loading a file)
 - Presentation mode toggles via CSS class (`.presentation-mode`) rather than separate components
 - State persistence uses localStorage (current pad number, folder path, settings)
 
-## CI/CD
+## Distribution
 
-GitHub Actions (`release.yml`): triggered on `v*` tags, builds on macOS with Node 22 + pnpm 10 + Rust stable, produces signed DMG via tauri-action.
+No CI/CD pipeline. Users install by building from source via `setup.sh` (one-liner curl command). This avoids macOS Gatekeeper/code signing issues that require a paid Apple Developer account.

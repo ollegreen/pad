@@ -16,14 +16,13 @@ Each file is a pad. Create as many as you want (`Cmd+N`) and hop between them (`
 
 ## Install
 
-Mac only.
+Mac only. One command — installs dependencies, builds from source, and copies to Applications:
 
-1. Download **Pad.dmg** from [Releases](../../releases/latest)
-2. Open it
-3. Drag Pad to Applications
-4. Done
+```
+curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
+```
 
-> First launch: macOS may say "unidentified developer". Go to **System Settings → Privacy & Security** and click **Open Anyway**.
+> Requires macOS with git. The script will install Homebrew, Rust, Node.js, and pnpm if needed.
 
 ## Shortcuts
 
@@ -74,8 +73,8 @@ All shortcuts are rebindable in settings.
 Requires Rust, Node.js, and pnpm.
 
 ```
-git clone https://github.com/olle/texteditmd.git
-cd texteditmd
+git clone https://github.com/ollegreen/pad.git
+cd pad
 pnpm install
 pnpm tauri build
 ```
