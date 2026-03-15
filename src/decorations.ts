@@ -10,6 +10,7 @@ import { syntaxTree } from "@codemirror/language";
 import { Range, StateEffect } from "@codemirror/state";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { getFolderPath } from "./pads";
+import { isPresentationMode } from "./presentation";
 
 // --- Image cache: path → blob URL ---
 const imageCache = new Map<string, string>();
@@ -154,6 +155,7 @@ class ImageWidget extends WidgetType {
 // --- Helpers ---
 
 function cursorOn(view: EditorView, from: number, to: number): boolean {
+  if (isPresentationMode()) return false;
   const { head } = view.state.selection.main;
   return head >= from && head <= to;
 }
