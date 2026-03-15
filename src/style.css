@@ -1,0 +1,214 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #editor {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+#welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-card {
+  text-align: center;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.welcome-card h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.welcome-card p {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-card button {
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.welcome-card button:hover {
+  background: #444;
+}
+
+.welcome-divider {
+  width: 40px;
+  height: 1px;
+  background: #3a3a3a;
+  margin: 1.5rem auto;
+}
+
+.welcome-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.welcome-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #888;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.welcome-checkbox:hover {
+  color: #bbb;
+}
+
+.welcome-check-box {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #555;
+  border-radius: 3px;
+  position: relative;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.welcome-checkbox:hover .welcome-check-box {
+  border-color: #777;
+}
+
+.welcome-checkbox.checked .welcome-check-box {
+  border-color: #39e75f;
+}
+
+.welcome-checkbox.checked .welcome-check-box::after {
+  content: "✓";
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  font-size: 12px;
+  color: #39e75f;
+  font-weight: 700;
+}
+
+.welcome-checkbox.checked {
+  color: #ccc;
+}
+
+.welcome-footer {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #555;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.welcome-footer a {
+  color: #e8912d;
+  text-decoration: none;
+}
+
+.welcome-footer a:hover {
+  text-decoration: underline;
+}
+
+.centered-mode .cm-content {
+  text-align: center !important;
+}
+
+.centered-mode .cm-rendered-image {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.presentation-mode .cm-cursor,
+.presentation-mode .cm-dropCursor {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.presentation-mode .cm-selectionBackground {
+  display: none !important;
+}
+
+.presentation-mode .cm-content {
+  caret-color: transparent !important;
+}
+
+/* Pain Mode (light theme) */
+.pain-mode,
+.pain-mode body,
+.pain-mode #editor {
+  background: #ffffff !important;
+}
+
+.pain-mode .cm-editor {
+  background-color: #ffffff !important;
+  color: #1e1e1e !important;
+}
+
+.pain-mode .cm-content {
+  caret-color: #1e1e1e !important;
+}
+
+.pain-mode .cm-cursor,
+.pain-mode .cm-dropCursor {
+  border-left-color: #1e1e1e !important;
+}
+
+.pain-mode .cm-selectionBackground {
+  background-color: #add6ff !important;
+}
+
+.pain-mode .cm-bullet {
+  background-color: #1e1e1e !important;
+}
+
+.pain-mode .cm-panels {
+  background-color: #f0f0f0 !important;
+  color: #1e1e1e !important;
+}
+
+.pain-mode .cm-searchMatch {
+  background-color: #e0e0e0 !important;
+}
+
+.pain-mode .cm-blockquote-line {
+  border-left-color: #ccc !important;
+}
+
+.pain-mode .cm-rendered-hr {
+  border-top-color: #ccc !important;
+}
+
+.pain-mode .cm-scroller::-webkit-scrollbar-track {
+  background: #ffffff !important;
+}
+
+.pain-mode .cm-scroller::-webkit-scrollbar-thumb {
+  background: #ccc !important;
+}
