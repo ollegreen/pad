@@ -121,118 +121,83 @@ function clearSaveTimer(): void {
 // --- Onboarding Pad Content ---
 
 const ONBOARDING_PADS: string[] = [
-  // pad_1 — Welcome & first navigation
+  // pad_1 — Welcome
   `### Welcome to Pad
 
-This quick tour will show you everything you need to know.
+A minimal markdown editor. Let's get you started.
 
-Navigate to the next slide with **Alt + →**
-
-Go ahead, try it now.
+Press **Alt + →** to continue.
 `,
-  // pad_2 — Creating new pads
-  `### Creating a new pad
+  // pad_2 — Writing basics
+  `### Writing
 
-Press **Cmd + N** to create a new pad.
+Just type — it's markdown.
 
-It gets inserted right after the one you're on.
+**Bold**, *italic*, ~~strikethrough~~, # headings, > quotes.
 
-Don't try it now though — press **Alt + →** to continue.
+Your work auto-saves. Click formatted text to see the raw markdown.
 `,
-  // pad_3 — Navigation
-  `### Navigating between pads
+  // pad_3 — Keyboard overview
+  `### Keyboard shortcuts
 
-You already know this one:
+**Alt + ←/→** — navigate between pads
+**Cmd + N** — new pad
+**Cmd + T** — insert todo
+**Cmd + B / I** — bold / italic
+**Alt + C** — centered mode
+**Cmd + P** — presentation mode
+**Cmd + ,** — settings
 
-**Alt + →** — next pad
-**Alt + ←** — previous pad
-
-Your pads auto-save as you type. No need to hit save.
+Let's walk through each of these.
 `,
-  // pad_4 — Markdown formatting
-  `### Writing with markdown
+  // pad_4 — Pads & navigation
+  `### Pads
 
-# This is a heading
-## This is a smaller heading
+Each pad is a separate markdown file.
 
-**Bold text** with double asterisks
-*Italic text* with single asterisks
-~~Strikethrough~~ with double tildes
+**Cmd + N** — create a new pad
+**Alt + ←/→** — move between pads
 
-> Blockquotes start with >
-
-Click on any formatted text to see the raw markdown.
+They auto-save to your pad folder.
 `,
-  // pad_5 — Checklists & todos
-  `### Checklists & todos
+  // pad_5 — Todos
+  `### Todos
 
 - [ ] Click this checkbox
-- [x] This one is already done
+- [x] This one is done
 - [ ] Great for tracking tasks
 
-Press **Cmd + T** to quickly insert a todo.
-
-Tip: you can click the checkboxes directly.
+**Cmd + T** inserts a new todo.
 `,
-  // pad_6 — Centered mode
-  `### Centered mode
-
-Press **Alt + C** to toggle centered mode.
-
-Everything gets centered — text, images, the lot.
-
-Perfect for focused writing or presenting ideas.
-
-Try it now, then press **Alt + C** again to toggle back.
-`,
-  // pad_7 — Images & Lars
+  // pad_6 — Images
   `### Images
 
-You can paste images directly from your clipboard.
+Paste images directly from your clipboard.
 
-They auto-save as screenshots in your pad folder.
-
-Here's Lars:
+They save as files in your pad folder.
 
 ![](lars_image.jpg)
+`,
+  // pad_7 — Centered mode
+  `### Centered mode
 
-Hi Lars.
+**Alt + C** toggles centered mode.
+
+Centers text, images, the lot. Try it now.
+
+Press **Alt + C** again to toggle back.
 `,
   // pad_8 — Presentation mode
   `### Presentation mode
 
-Press **Cmd + P** to enter presentation mode.
+**Cmd + P** turns your pads into slides.
 
-Your pads become slides. Arrow keys navigate between them.
-
-Press **Cmd + P** again to exit.
-
-Great for walkthroughs just like this one.
+Arrow keys navigate. **Cmd + P** again to exit.
 `,
-  // pad_9 — Settings & customization
+  // pad_9 — You're all set
   `### Make it yours
 
-Press **Cmd + ,** to open settings.
-
-You can change:
-
-- Accent colors for checkboxes
-- Fonts
-- Every keyboard shortcut
-`,
-  // pad_10 — You're all set
-  `### You're all set
-
-Here's everything at a glance:
-
-**Cmd + N** — new pad
-**Alt + ←/→** — navigate pads
-**Alt + C** — centered mode
-**Cmd + P** — presentation mode
-**Cmd + ,** — settings
-**Cmd + B** — bold
-**Cmd + I** — italic
-**Cmd + T** — insert todo
+**Cmd + ,** opens settings — change colors, fonts, and rebind any shortcut.
 
 Press **Cmd + N** to create your first pad. Happy writing.
 `,
