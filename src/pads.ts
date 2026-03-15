@@ -137,6 +137,11 @@ Just type — it's markdown.
 
 Your work auto-saves. Click formatted text to see the raw markdown.
 
+\`\`\`python
+def greet(name):
+    return f"Hello, {name}!"
+\`\`\`
+
 **Option + →** to continue.
 `,
   // pad_3 — Keyboard overview
