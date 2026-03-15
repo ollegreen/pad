@@ -5,6 +5,7 @@ import { newPad, nextPad, prevPad } from "./pads";
 
 const STORAGE_KEY = "markdownpad-shortcuts";
 const FONT_SIZE_KEY = "markdownpad-font-size";
+const FONT_SIZE_STEP = 9;
 
 export type ShortcutAction = {
   id: string;
@@ -83,7 +84,7 @@ export const defaultShortcuts: ShortcutAction[] = [
     label: "Increase Font Size",
     defaultKey: "Mod-=",
     run: (view) => {
-      setFontSize(view, fontSize + 3);
+      setFontSize(view, fontSize + FONT_SIZE_STEP);
       return true;
     },
   },
@@ -92,7 +93,7 @@ export const defaultShortcuts: ShortcutAction[] = [
     label: "Decrease Font Size",
     defaultKey: "Mod--",
     run: (view) => {
-      setFontSize(view, fontSize - 3);
+      setFontSize(view, fontSize - FONT_SIZE_STEP);
       return true;
     },
   },
