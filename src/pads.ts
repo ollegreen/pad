@@ -147,11 +147,20 @@ def greet(name):
   // pad_3 — Keyboard overview
   `### Keyboard shortcuts
 
-**Option + ←/→** — navigate between pads
+**Navigation**
+**Option + ←/→** — move between pads
 **Cmd + N** — new pad
+
+**Text size**
+**Cmd + +** — zoom in
+**Cmd + -** — zoom out
+
+**Editing**
 **Cmd + T** — insert todo
 **Cmd + B / I** — bold / italic
 **Option + C** — centered mode
+
+**Presentation & settings**
 **Cmd + P** — presentation mode
 **Cmd + ,** — settings
 
@@ -185,7 +194,7 @@ Paste images directly from your clipboard.
 
 They save as files in your pad folder.
 
-## This is Lars enjoying some ostbågar.
+#### This is Lars enjoying some ostbågar.
 
 ![](lars_image.jpg)
 
