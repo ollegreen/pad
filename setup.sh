@@ -51,7 +51,7 @@ echo "  Building pad..."
 echo ""
 
 pnpm install
-pnpm tauri build
+pnpm tauri build --bundles app
 
 # Copy to Applications
 cp -rf src-tauri/target/release/bundle/macos/Pad.app /Applications/Pad.app
