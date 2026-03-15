@@ -5,7 +5,7 @@ import { newPad, nextPad, prevPad } from "./pads";
 
 const STORAGE_KEY = "markdownpad-shortcuts";
 const FONT_SIZE_KEY = "markdownpad-font-size";
-const FONT_SIZE_STEP = 9;
+const FONT_SIZE_STEP = 6;
 
 export type ShortcutAction = {
   id: string;
