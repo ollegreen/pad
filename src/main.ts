@@ -78,6 +78,9 @@ const view = new EditorView({
 applyFontSize(view);
 applyAccentColor();
 applyFont();
+if (isCentered()) {
+  view.dom.classList.add("centered-mode");
+}
 initCloseHandler();
 initImagePaste(view);
 initPadSystem(view).catch(console.error);

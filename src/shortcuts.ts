@@ -153,7 +153,8 @@ export const defaultShortcuts: ShortcutAction[] = [
 ];
 
 // --- Centered mode (Alt-c) ---
-let centered = false;
+const CENTERED_KEY = "pad-centered";
+let centered = localStorage.getItem(CENTERED_KEY) === "1";
 let centerRAF = 0;
 
 export function isCentered(): boolean {
@@ -188,6 +189,7 @@ export function scheduleCenterUpdate(view: EditorView) {
 
 export function toggleCenter(view: EditorView) {
   centered = !centered;
+  localStorage.setItem(CENTERED_KEY, centered ? "1" : "");
   view.dom.classList.toggle("centered-mode", centered);
   updateCenterPadding(view);
 }
