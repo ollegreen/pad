@@ -292,3 +292,74 @@ html, body, #editor {
 .pain-mode .cm-scroller::-webkit-scrollbar-thumb {
   background: #ccc !important;
 }
+
+/* Update toast */
+#update-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: #252525;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: #d4d4d4;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#update-toast.visible {
+  opacity: 1;
+}
+
+#update-toast .toast-action {
+  background: #39e75f;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#update-toast .toast-action:hover {
+  background: #2fd152;
+}
+
+#update-toast .toast-dismiss {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+#update-toast .toast-dismiss:hover {
+  color: #d4d4d4;
+}
+
+.pain-mode #update-toast {
+  background: #f0f0f0;
+  border-color: #ddd;
+  color: #1e1e1e;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.pain-mode #update-toast .toast-dismiss {
+  color: #999;
+}
+
+.pain-mode #update-toast .toast-dismiss:hover {
+  color: #333;
+}

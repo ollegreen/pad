@@ -1,6 +1,23 @@
 use tauri::{Emitter, Manager};
 use tauri::menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu};
 
+#[tauri::command]
+async fn run_update() -> Result<String, String> {
+  tauri::async_runtime::spawn_blocking(|| {
+    let output = std::process::Command::new("bash")
+      .args(["-c", "source ~/.zprofile 2>/dev/null; source ~/.bash_profile 2>/dev/null; source $HOME/.cargo/env 2>/dev/null; curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash"])
+      .output()
+      .map_err(|e| e.to_string())?;
+    if output.status.success() {
+      Ok("done".to_string())
+    } else {
+      Err(String::from_utf8_lossy(&output.stderr).to_string())
+    }
+  })
+  .await
+  .map_err(|e| e.to_string())?
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
@@ -58,14 +75,11 @@ pub fn run() {
         "open_pad_set" => { let _ = app.emit("menu-open-pad-set", ()); },
         "add_onboarding" => { let _ = app.emit("menu-add-onboarding", ()); },
         "pain_mode" => { let _ = app.emit("menu-pain-mode", ()); },
-        "check_updates" => {
-          let _ = std::process::Command::new("osascript")
-            .args(["-e", "tell application \"Terminal\" to do script \"curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash\""])
-            .spawn();
-        },
+        "check_updates" => { let _ = app.emit("menu-check-updates", ()); },
         _ => {}
       }
     })
+    .invoke_handler(tauri::generate_handler![run_update])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")
     .run(|app, event| {
