@@ -225,6 +225,8 @@ Arrow keys navigate. **Cmd + P** again to exit.
 
 **Cmd + ,** opens settings — change colors, fonts, and rebind any shortcut.
 
+Delete these slides with **Cmd + D**. Want them back? **File → Add onboarding slides**.
+
 Press **Cmd + N** to create your first pad. Happy writing.
 `,
 ];
