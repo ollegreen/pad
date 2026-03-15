@@ -1,76 +1,51 @@
-# Pad
+<p align="center">
+  <img src="public/pad_logo.png" width="128" alt="Pad logo" />
+</p>
 
-A minimal text editor and markdown presentation app for Mac.
+<h1 align="center">Pad</h1>
 
-Hop between pads — jot notes, present slides, or just blow off some keyboard steam. Each pad is a small surface to land on, think on, and leap from to the next.
+<p align="center">
+  A minimal markdown editor and presentation app for macOS.
+</p>
 
 <!-- screenshots go here -->
 
-## Two modes, one app
+## ✨ Features
 
-**Writing mode** — a distraction-free dark editor with live markdown rendering. Headings, checkboxes, bold, italic, links, code blocks — all styled inline as you type. Your work auto-saves.
+- **Distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
+- **Presentation mode** — your pads become fullscreen slides with `Cmd+P`
+- **Multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
+- **Auto-save** — your work is always saved
+- **Customizable** — accent colors, fonts, rebindable shortcuts
+- **Tiny footprint** — ~5 MB native app, built with Tauri 2
 
-**Presentation mode** — hit `Cmd+P` and your pads become fullscreen slides. Navigate with arrow keys. Hit `Cmd+P` again to go back to editing.
+## 📦 Install
 
-Each file is a pad. Create as many as you want (`Cmd+N`) and hop between them (`Alt+←/→`). In presentation mode, each pad is a slide.
-
-## Install
-
-Mac only. One command — installs dependencies, builds from source, and copies to Applications:
+One command — clones, builds from source, and copies to `/Applications`:
 
 ```
 curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
 ```
 
-> Requires macOS with git. The script will install Homebrew, Rust, Node.js, and pnpm if needed.
+Requires macOS with git. The script installs Homebrew, Rust, Node.js, and pnpm if needed.
 
-## Shortcuts
-
-**Pads**
+## ⌨️ Shortcuts
 
 | Shortcut | Action |
 |---|---|
 | `Cmd+N` | New pad |
-| `Alt+←/→` | Switch between pads |
-
-**Writing**
-
-| Shortcut | Action |
-|---|---|
-| `Cmd+B` | Bold |
-| `Cmd+I` | Italic |
-| `Cmd+T` | Insert todo checkbox |
+| `Alt+←/→` | Switch pads |
+| `Cmd+P` | Toggle presentation mode |
+| `←/→` | Navigate slides |
+| `Cmd+B` / `Cmd+I` | Bold / italic |
+| `Cmd+T` | Insert checkbox |
 | `Cmd+F` | Find |
 | `Cmd++/−` | Font size |
-| `Alt+C` | Center text vertically |
-
-**Presenting**
-
-| Shortcut | Action |
-|---|---|
-| `Cmd+P` | Toggle presentation mode |
-| `←/→` | Previous / next slide |
-
-**Files & settings**
-
-| Shortcut | Action |
-|---|---|
-| `Cmd+S` | Save |
-| `Cmd+Shift+S` | Save as |
-| `Cmd+O` | Open file |
-| `Cmd+,` | Settings (accent color, font, rebind keys) |
+| `Cmd+,` | Settings |
 
 All shortcuts are rebindable in settings.
 
-## Built with
-
-- **TypeScript** + **CodeMirror 6** — the editor
-- **Tauri 2** (Rust) — native Mac app wrapper, ~5MB binary
-- **Vite** — bundler
-
-## Build from source
-
-Requires Rust, Node.js, and pnpm.
+## 🛠 Build from source
 
 ```
 git clone https://github.com/ollegreen/pad.git
@@ -79,10 +54,8 @@ pnpm install
 pnpm tauri build
 ```
 
-The `.dmg` lands in `src-tauri/target/release/bundle/dmg/`.
+For development with hot reload: `pnpm tauri dev`
 
-For development with hot reload:
+## Built with
 
-```
-pnpm tauri dev
-```
+TypeScript, [CodeMirror 6](https://codemirror.net/), [Tauri 2](https://v2.tauri.app/), Vite
