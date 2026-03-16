@@ -202,8 +202,9 @@ html, body, #editor {
   min-width: 0 !important;
 }
 
-.centered-mode .cm-rendered-image {
+.cm-rendered-image-wrapper {
   display: block;
+  text-align: left;
 }
 
 .presentation-mode .cm-cursor,

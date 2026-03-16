@@ -140,11 +140,14 @@ class ImageWidget extends WidgetType {
   constructor(readonly src: string, readonly alt: string) { super(); }
 
   toDOM() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "cm-rendered-image-wrapper";
     const img = document.createElement("img");
     img.src = this.src;
     img.alt = this.alt;
     img.className = "cm-rendered-image";
-    return img;
+    wrapper.appendChild(img);
+    return wrapper;
   }
 
   eq(other: ImageWidget) {
