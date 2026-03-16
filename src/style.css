@@ -203,8 +203,7 @@ html, body, #editor {
 }
 
 .centered-mode .cm-rendered-image {
-  margin-left: auto !important;
-  margin-right: auto !important;
+  display: block;
 }
 
 .presentation-mode .cm-cursor,
