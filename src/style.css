@@ -202,9 +202,12 @@ html, body, #editor {
   min-width: 0 !important;
 }
 
-.cm-rendered-image-wrapper {
-  display: block;
-  text-align: left;
+.cm-image-source {
+  height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  line-height: 0 !important;
+  font-size: 0 !important;
 }
 
 .presentation-mode .cm-cursor,

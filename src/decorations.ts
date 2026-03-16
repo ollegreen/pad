@@ -140,14 +140,14 @@ class ImageWidget extends WidgetType {
   constructor(readonly src: string, readonly alt: string) { super(); }
 
   toDOM() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "cm-rendered-image-wrapper";
     const img = document.createElement("img");
     img.src = this.src;
     img.alt = this.alt;
     img.className = "cm-rendered-image";
-    img.style.setProperty("display", "block", "important");
-    img.style.setProperty("margin-left", "0", "important");
-    img.style.setProperty("margin-right", "0", "important");
-    return img;
+    wrapper.appendChild(img);
+    return wrapper;
   }
 
   eq(other: ImageWidget) {
@@ -354,9 +354,18 @@ function buildDecorations(view: EditorView): DecorationSet {
                   }
                 }
                 if (src) {
+                  // Hide the markdown text
+                  decs.push(Decoration.replace({}).range(node.from, node.to));
+                  // Collapse the now-empty source line
+                  const imgLine = view.state.doc.lineAt(node.from);
+                  decs.push(Decoration.line({ class: "cm-image-source" }).range(imgLine.from));
+                  // Render image as a block widget (outside .cm-line, avoids contenteditable centering)
                   decs.push(
-                    Decoration.replace({ widget: new ImageWidget(src, m[1]) })
-                      .range(node.from, node.to)
+                    Decoration.widget({
+                      widget: new ImageWidget(src, m[1]),
+                      block: true,
+                      side: 1,
+                    }).range(imgLine.from)
                   );
                 }
               }
