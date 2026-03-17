@@ -109,7 +109,7 @@ export const padTheme = EditorView.theme(
     // Image widget
     ".cm-rendered-image": {
       maxWidth: "100%",
-      maxHeight: "400px",
+      maxHeight: "28em",
       borderRadius: "4px",
       display: "block",
       margin: "4px 0",
