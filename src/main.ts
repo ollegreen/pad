@@ -23,7 +23,7 @@ import {
   toggleCenter,
 } from "./shortcuts";
 import { openSettingsModal, applyAccentColor, applyFont } from "./settings";
-import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad } from "./pads";
+import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad } from "./pads";
 import {
   readOnlyCompartment,
   togglePresentationMode,
@@ -99,7 +99,10 @@ document.addEventListener("keydown", (e) => {
     e.preventDefault();
     togglePresentationMode(view);
   }
-  if ((e.metaKey || e.ctrlKey) && e.key === "d") {
+  if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "d") {
+    e.preventDefault();
+    undoDeletePad();
+  } else if ((e.metaKey || e.ctrlKey) && e.key === "d") {
     e.preventDefault();
     deletePad();
   }
