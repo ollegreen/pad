@@ -30,7 +30,7 @@ let saveTimer: ReturnType<typeof setTimeout> | null = null;
 let editorView: EditorView | null = null;
 let padOpLock = false;
 let suppressDirty = false;
-let lastDeleted: { content: string; position: number } | null = null;
+const deletedStack: { content: string; position: number }[] = [];
 
 export function isSuppressingDirty(): boolean {
   return suppressDirty;
@@ -387,7 +387,7 @@ export async function deletePad(): Promise<void> {
     clearSaveTimer();
 
     const content = await readTextFile(padPath(currentPadNum));
-    lastDeleted = { content, position: currentPadNum };
+    deletedStack.push({ content, position: currentPadNum });
 
     await remove(padPath(currentPadNum));
 
@@ -404,8 +404,8 @@ export async function deletePad(): Promise<void> {
 
 export async function undoDeletePad(): Promise<void> {
   await withLock(async () => {
-    if (!lastDeleted) return;
-    const { content, position } = lastDeleted;
+    if (deletedStack.length === 0) return;
+    const { content, position } = deletedStack.pop()!;
 
     await saveCurrent();
     clearSaveTimer();
@@ -418,8 +418,6 @@ export async function undoDeletePad(): Promise<void> {
 
     await writeTextFile(padPath(position), content);
     totalPads += 1;
-    lastDeleted = null;
-
     await loadPad(position);
   });
 }
