@@ -18,6 +18,8 @@ import {
   shortcutCompartment,
   buildKeymap,
   applyFontSize,
+  getFontSize,
+  setFontSize,
   isCentered,
   scheduleCenterUpdate,
   toggleCenter,
@@ -111,3 +113,12 @@ document.addEventListener("keydown", (e) => {
     toggleCenter(view);
   }
 }, true);
+
+// Pinch-to-zoom on trackpad (ctrlKey is set on pinch gestures)
+document.addEventListener("wheel", (e) => {
+  if (e.ctrlKey) {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -1 : 1;
+    setFontSize(view, getFontSize() + delta);
+  }
+}, { passive: false });

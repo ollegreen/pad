@@ -17,7 +17,9 @@ export type ShortcutAction = {
 // Current font size (persisted to localStorage)
 let fontSize = parseInt(localStorage.getItem(FONT_SIZE_KEY) || "14", 10);
 
-function setFontSize(view: EditorView, size: number) {
+export function getFontSize() { return fontSize; }
+
+export function setFontSize(view: EditorView, size: number) {
   fontSize = Math.max(6, size);
   localStorage.setItem(FONT_SIZE_KEY, String(fontSize));
   const content = view.dom.querySelector(".cm-content") as HTMLElement;
