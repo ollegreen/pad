@@ -382,3 +382,12 @@ html, body, #editor {
 .pain-mode #update-toast .toast-dismiss:hover {
   color: #333;
 }
+
+.laser-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3000;
+  cursor: crosshair;
+}

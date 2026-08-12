@@ -7,6 +7,7 @@ import {
   updateCenterPadding,
 } from "./shortcuts";
 import { nextPad, prevPad, refreshPadTitle } from "./pads";
+import { enableLaser, disableLaser } from "./laser";
 
 let presentationMode = false;
 
@@ -38,6 +39,12 @@ export function togglePresentationMode(view: EditorView): void {
       shortcutCompartment.reconfigure(buildKeymap()),
     ],
   });
+
+  if (presentationMode) {
+    enableLaser();
+  } else {
+    disableLaser();
+  }
 
   view.dom.classList.toggle("presentation-mode", presentationMode);
   updateCenterPadding(view);

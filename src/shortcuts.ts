@@ -145,6 +145,15 @@ export const defaultShortcuts: ShortcutAction[] = [
     },
   },
   {
+    id: "toggleCenter",
+    label: "Center Text",
+    defaultKey: "Alt-c",
+    run: (view) => {
+      toggleCenter(view);
+      return true;
+    },
+  },
+  {
     id: "nextPad",
     label: "Next Pad",
     defaultKey: "Alt-ArrowRight",

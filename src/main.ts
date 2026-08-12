@@ -23,7 +23,6 @@ import {
   setFontSize,
   isCentered,
   scheduleCenterUpdate,
-  toggleCenter,
 } from "./shortcuts";
 import { openSettingsModal, applyAccentColor, applyFont, applyCodeFont } from "./settings";
 import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad } from "./pads";
@@ -110,10 +109,6 @@ document.addEventListener("keydown", (e) => {
   } else if ((e.metaKey || e.ctrlKey) && e.key === "d") {
     e.preventDefault();
     deletePad();
-  }
-  if (e.altKey && e.code === "KeyC") {
-    e.preventDefault();
-    toggleCenter(view);
   }
 }, true);
 

@@ -53,7 +53,9 @@ echo ""
 pnpm install
 pnpm tauri build --bundles app
 
-# Copy to Applications
+# Copy to Applications (remove old bundle first — cp into an existing
+# .app directory would nest the new bundle inside it)
+rm -rf /Applications/Pad.app
 cp -rf src-tauri/target/release/bundle/macos/Pad.app /Applications/Pad.app
 
 # Clean up temp build dir
