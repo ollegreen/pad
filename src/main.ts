@@ -11,6 +11,7 @@ import { languages } from "@codemirror/language-data";
 import { bracketMatching } from "@codemirror/language";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 import { GFM } from "@lezer/markdown";
+import { listen } from "@tauri-apps/api/event";
 import { padTheme, padHighlighting } from "./theme";
 import { markdownDecorations } from "./decorations";
 import { markDirty, initCloseHandler } from "./fileio";
@@ -24,7 +25,7 @@ import {
   scheduleCenterUpdate,
   toggleCenter,
 } from "./shortcuts";
-import { openSettingsModal, applyAccentColor, applyFont } from "./settings";
+import { openSettingsModal, applyAccentColor, applyFont, applyCodeFont } from "./settings";
 import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad } from "./pads";
 import {
   readOnlyCompartment,
@@ -82,9 +83,11 @@ const view = new EditorView({
 applyFontSize(view);
 applyAccentColor();
 applyFont();
+applyCodeFont();
 if (isCentered()) {
   document.documentElement.classList.add("centered-mode");
 }
+listen("menu-settings", () => openSettingsModal(view));
 initCloseHandler();
 initImagePaste(view);
 initPadSystem(view).catch(console.error);

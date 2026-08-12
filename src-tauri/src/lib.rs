@@ -35,6 +35,8 @@ pub fn run() {
       let app_menu = Submenu::with_items(app, "Pad", true, &[
         &PredefinedMenuItem::about(app, Some("About Pad"), None)?,
         &PredefinedMenuItem::separator(app)?,
+        &MenuItem::with_id(app, "settings", "Settings…", true, Some("CmdOrCtrl+,"))?,
+        &PredefinedMenuItem::separator(app)?,
         &PredefinedMenuItem::services(app, None)?,
         &PredefinedMenuItem::separator(app)?,
         &PredefinedMenuItem::hide(app, None)?,
@@ -76,6 +78,7 @@ pub fn run() {
         "add_onboarding" => { let _ = app.emit("menu-add-onboarding", ()); },
         "pain_mode" => { let _ = app.emit("menu-pain-mode", ()); },
         "check_updates" => { let _ = app.emit("menu-check-updates", ()); },
+        "settings" => { let _ = app.emit("menu-settings", ()); },
         _ => {}
       }
     })

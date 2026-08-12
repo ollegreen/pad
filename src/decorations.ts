@@ -104,6 +104,30 @@ class LinkWidget extends WidgetType {
 
 // --- Bullet Widget ---
 
+// --- Excalidraw-style arrow widget ---
+
+const ARROW_ROTATION: Record<string, number> = { d: 0, u: 180, l: 90, r: -90 };
+// `->` and `d`/`u`/`l`/`r` inside backticks render as a hand-drawn arrow
+const ARROW_CODES: Record<string, string> = { "->": "d", u: "u", d: "d", l: "l", r: "r" };
+
+class SketchArrowWidget extends WidgetType {
+  constructor(readonly dir: string) {
+    super();
+  }
+
+  toDOM() {
+    const span = document.createElement("span");
+    span.className = "cm-arrow-widget";
+    // Drawn pointing down; rotated for the other directions
+    span.innerHTML = `<svg viewBox="0 0 28 40" fill="none" stroke="#f28b82" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(${ARROW_ROTATION[this.dir]}deg)"><path d="M14 3 C 13.4 7, 14.5 10, 14 15"/><path d="M5 21 C 8.5 25, 12 30.5, 14 37 C 15.5 31, 19.5 25.5, 23 20.5"/></svg>`;
+    return span;
+  }
+
+  eq(other: SketchArrowWidget) {
+    return this.dir === other.dir;
+  }
+}
+
 class BulletWidget extends WidgetType {
   toDOM() {
     const dot = document.createElement("span");
@@ -262,11 +286,14 @@ function buildDecorations(view: EditorView): DecorationSet {
             }
           }
 
-          // --- Inline code: hide backticks ---
+          // --- Inline code: arrows for `->`/`u`/`d`/`l`/`r`, else hide backticks ---
           else if (node.name === "InlineCode") {
             if (!cursorOn(view, node.from, node.to)) {
               const text = view.state.sliceDoc(node.from, node.to);
-              if (text.startsWith("`") && text.endsWith("`") && text.length > 2) {
+              const arrowDir = ARROW_CODES[text.slice(1, -1)];
+              if (arrowDir !== undefined && text.startsWith("`") && text.endsWith("`")) {
+                decs.push(Decoration.replace({ widget: new SketchArrowWidget(arrowDir) }).range(node.from, node.to));
+              } else if (text.startsWith("`") && text.endsWith("`") && text.length > 2) {
                 decs.push(Decoration.replace({}).range(node.from, node.from + 1));
                 decs.push(Decoration.replace({}).range(node.to - 1, node.to));
               }

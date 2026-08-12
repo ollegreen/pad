@@ -2,6 +2,23 @@ import { EditorView } from "@codemirror/view";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 
+// Excalidraw-style dashed pill frame, used as a border-image so the dashes,
+// stroke, and corners scale with font size (Cmd+/- zoom, presentation mode).
+// Corners are solid arcs, edges hand-placed dashes; slice 50 + repeat round.
+const inlineCodePillSvg = encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='210' height='160' viewBox='0 0 210 160'>" +
+    "<g fill='none' stroke='#f28b82' stroke-width='10' stroke-linecap='round'>" +
+    "<path d='M 5 29 A 24 24 0 0 1 29 5'/>" +
+    "<path d='M 181 5 A 24 24 0 0 1 205 29'/>" +
+    "<path d='M 205 131 A 24 24 0 0 1 181 155'/>" +
+    "<path d='M 29 155 A 24 24 0 0 1 5 131'/>" +
+    "<path d='M 60 5 H 150'/>" +
+    "<path d='M 60 155 H 150'/>" +
+    "<path d='M 5 65 V 95'/>" +
+    "<path d='M 205 65 V 95'/>" +
+    "</g></svg>"
+);
+
 export const padTheme = EditorView.theme(
   {
     "&": {
@@ -12,7 +29,7 @@ export const padTheme = EditorView.theme(
     ".cm-content": {
       fontFamily: "var(--pad-font, 'SF Mono', Menlo, Monaco, 'Courier New', monospace)",
       fontSize: "14px",
-      lineHeight: "1.3",
+      lineHeight: "1.55",
       padding: "4px 8px",
       caretColor: "#ffffff",
     },
@@ -52,6 +69,18 @@ export const padTheme = EditorView.theme(
     // Code block line decoration
     ".cm-codeblock-line": {
       backgroundColor: "var(--pad-code-bg, #2d2d2d)",
+    },
+    // Excalidraw-style arrow widget (from `->` / `u` / `d` / `l` / `r`)
+    ".cm-arrow-widget": {
+      display: "inline-block",
+      width: "1.6em",
+      height: "2.9em",
+      verticalAlign: "middle",
+      margin: "0.35em 0.6em",
+    },
+    ".cm-arrow-widget svg": {
+      width: "100%",
+      height: "100%",
     },
     // Checkbox widget — sized relative to font, accent via CSS var
     ".cm-checkbox": {
@@ -158,7 +187,7 @@ export const padHighlighting = syntaxHighlighting(
     { tag: tags.strong, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
     { tag: tags.emphasis, fontStyle: "italic", color: "var(--pad-text, #ffffff)" },
     { tag: tags.strikethrough, textDecoration: "line-through", color: "#808080" },
-    { tag: tags.monospace, backgroundColor: "var(--pad-inline-code-bg, #2d2d2d)", borderRadius: "3px", color: "var(--pad-text, #ffffff)" },
+    { tag: tags.monospace, fontFamily: "var(--pad-code-font, 'Comic Sans MS', cursive)", color: "#f28b82", display: "inline-block", border: "0.35em solid transparent", borderImageSource: `url("data:image/svg+xml,${inlineCodePillSvg}")`, borderImageSlice: "35", borderImageRepeat: "round", padding: "0 0.45em", margin: "0.45em 0" },
     { tag: tags.link, color: "#e8912d" },
     { tag: tags.url, color: "#e8912d" },
     { tag: tags.quote, color: "var(--pad-text, #ffffff)" },

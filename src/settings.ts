@@ -21,6 +21,22 @@ const FONT_OPTIONS: { label: string; value: string }[] = [
   { label: "JetBrains Mono", value: "'JetBrains Mono', monospace" },
 ];
 
+const CODE_FONT_KEY = "pad-code-font";
+const CODE_FONT_OPTIONS: { label: string; value: string }[] = [
+  { label: "Comic Sans", value: "'Comic Sans MS', cursive" },
+  { label: "Bradley Hand", value: "'Bradley Hand', cursive" },
+  { label: "Chalkduster", value: "'Chalkduster', cursive" },
+  { label: "Chalkboard", value: "'Chalkboard SE', cursive" },
+];
+
+export function getCodeFont(): string {
+  return localStorage.getItem(CODE_FONT_KEY) || CODE_FONT_OPTIONS[0].value;
+}
+
+export function applyCodeFont() {
+  document.documentElement.style.setProperty("--pad-code-font", getCodeFont());
+}
+
 export function getAccentColor(): string {
   return localStorage.getItem(ACCENT_KEY) || "#39e75f";
 }
@@ -164,6 +180,43 @@ function render(view: EditorView) {
     fontRow.appendChild(btn);
   }
   card.appendChild(fontRow);
+
+  // --- Code font section ---
+  const codeFontTitle = document.createElement("div");
+  codeFontTitle.textContent = "Code Font";
+  codeFontTitle.style.cssText = `
+    font-size: 16px; font-weight: bold; margin-bottom: 14px;
+    padding-bottom: 12px; border-bottom: 1px solid #3a3a3a;
+  `;
+  card.appendChild(codeFontTitle);
+
+  const codeFontRow = document.createElement("div");
+  codeFontRow.style.cssText = "display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;";
+
+  const currentCodeFont = getCodeFont();
+  for (const opt of CODE_FONT_OPTIONS) {
+    const btn = document.createElement("div");
+    const isSelected = currentCodeFont === opt.value;
+    btn.textContent = opt.label;
+    btn.style.cssText = `
+      padding: 8px 12px; border-radius: 6px; cursor: pointer;
+      font-family: ${opt.value}; font-size: 22px;
+      background: ${isSelected ? "#3a3a3a" : "#1e1e1e"};
+      border: 1px solid ${isSelected ? "#666" : "#2a2a2a"};
+      color: #f28b82; transition: background 0.15s, border-color 0.15s;
+    `;
+    btn.addEventListener("click", () => {
+      localStorage.setItem(CODE_FONT_KEY, opt.value);
+      applyCodeFont();
+      codeFontRow.querySelectorAll("div").forEach((b, i) => {
+        const sel = CODE_FONT_OPTIONS[i].value === opt.value;
+        (b as HTMLElement).style.background = sel ? "#3a3a3a" : "#1e1e1e";
+        (b as HTMLElement).style.borderColor = sel ? "#666" : "#2a2a2a";
+      });
+    });
+    codeFontRow.appendChild(btn);
+  }
+  card.appendChild(codeFontRow);
 
   // --- Shortcuts section ---
   const title = document.createElement("div");
