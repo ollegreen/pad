@@ -7,7 +7,7 @@ import { tags } from "@lezer/highlight";
 // Corners are solid arcs, edges hand-placed dashes; slice 50 + repeat round.
 const inlineCodePillSvg = encodeURIComponent(
   "<svg xmlns='http://www.w3.org/2000/svg' width='210' height='160' viewBox='0 0 210 160'>" +
-    "<g fill='none' stroke='#f28b82' stroke-width='10' stroke-linecap='round'>" +
+    "<g fill='none' stroke='#ff5f1f' stroke-width='10' stroke-linecap='round'>" +
     "<path d='M 5 29 A 24 24 0 0 1 29 5'/>" +
     "<path d='M 181 5 A 24 24 0 0 1 205 29'/>" +
     "<path d='M 205 131 A 24 24 0 0 1 181 155'/>" +
@@ -187,7 +187,7 @@ export const padHighlighting = syntaxHighlighting(
     { tag: tags.strong, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
     { tag: tags.emphasis, fontStyle: "italic", color: "var(--pad-text, #ffffff)" },
     { tag: tags.strikethrough, textDecoration: "line-through", color: "#808080" },
-    { tag: tags.monospace, fontFamily: "var(--pad-code-font, 'Comic Sans MS', cursive)", color: "#f28b82", display: "inline-block", border: "0.35em solid transparent", borderImageSource: `url("data:image/svg+xml,${inlineCodePillSvg}")`, borderImageSlice: "35", borderImageRepeat: "round", padding: "0 0.45em", margin: "0.45em 0" },
+    { tag: tags.monospace, fontFamily: "var(--pad-code-font, 'Comic Sans MS', cursive)", color: "#ff5f1f", display: "inline-block", border: "0.35em solid transparent", borderImageSource: `url("data:image/svg+xml,${inlineCodePillSvg}")`, borderImageSlice: "35", borderImageRepeat: "round", padding: "0 0.45em", margin: "0.45em 0" },
     { tag: tags.link, color: "#e8912d" },
     { tag: tags.url, color: "#e8912d" },
     { tag: tags.quote, color: "var(--pad-text, #ffffff)" },

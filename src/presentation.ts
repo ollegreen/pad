@@ -46,11 +46,13 @@ export function togglePresentationMode(view: EditorView): void {
     disableLaser();
   }
 
-  view.dom.classList.toggle("presentation-mode", presentationMode);
+  // On documentElement, not view.dom — CodeMirror rewrites view.dom's class
+  // list on focus changes, which would wipe the class mid-presentation
+  document.documentElement.classList.toggle("presentation-mode", presentationMode);
   updateCenterPadding(view);
   refreshPadTitle();
 
-  if (!presentationMode) {
-    view.focus();
-  }
+  // Keep the editor focused in both directions — slide navigation
+  // (arrow keys) runs through the editor keymap
+  view.focus();
 }

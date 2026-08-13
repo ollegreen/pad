@@ -13,7 +13,7 @@ import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 import { GFM } from "@lezer/markdown";
 import { listen } from "@tauri-apps/api/event";
 import { padTheme, padHighlighting } from "./theme";
-import { markdownDecorations } from "./decorations";
+import { markdownDecorations, imageDecorations } from "./decorations";
 import { markDirty, initCloseHandler } from "./fileio";
 import {
   shortcutCompartment,
@@ -23,9 +23,10 @@ import {
   setFontSize,
   isCentered,
   scheduleCenterUpdate,
+  historyCompartment,
 } from "./shortcuts";
 import { openSettingsModal, applyAccentColor, applyFont, applyCodeFont } from "./settings";
-import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad } from "./pads";
+import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad, nextPad, prevPad, refreshFromDisk } from "./pads";
 import {
   readOnlyCompartment,
   togglePresentationMode,
@@ -33,6 +34,7 @@ import {
 } from "./presentation";
 import { initImagePaste } from "./images";
 import { initUpdater } from "./updater";
+import { dbg } from "./debug";
 
 const state = EditorState.create({
   doc: "",
@@ -40,9 +42,10 @@ const state = EditorState.create({
     padTheme,
     padHighlighting,
     markdownDecorations,
+    imageDecorations,
     markdown({ extensions: [GFM], codeLanguages: languages }),
     EditorView.lineWrapping,
-    history(),
+    historyCompartment.of(history()),
     bracketMatching(),
     highlightSelectionMatches(),
     // Read-only state (toggled by presentation mode)
@@ -110,7 +113,25 @@ document.addEventListener("keydown", (e) => {
     e.preventDefault();
     deletePad();
   }
+  // Slide navigation must work even when the editor isn't focused
+  // (the laser canvas swallows clicks in presentation mode)
+  if (isPresentationMode() && !e.metaKey && !e.altKey && !e.ctrlKey) {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      nextPad();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      prevPad();
+    }
+  }
 }, true);
+
+// Pick up external file changes (e.g. a second app instance on the same folder)
+window.addEventListener("focus", () => {
+  dbg("window focus");
+  refreshFromDisk().catch(console.error);
+});
+window.addEventListener("blur", () => dbg("window blur"));
 
 // Pinch-to-zoom on trackpad (ctrlKey is set on pinch gestures)
 document.addEventListener("wheel", (e) => {

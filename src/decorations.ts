@@ -7,10 +7,11 @@ import {
   WidgetType,
 } from "@codemirror/view";
 import { syntaxTree } from "@codemirror/language";
-import { Range, StateEffect } from "@codemirror/state";
+import { Range, StateEffect, StateField, EditorState } from "@codemirror/state";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { getFolderPath } from "./pads";
 import { isPresentationMode } from "./presentation";
+import { dbg } from "./debug";
 
 // --- Image cache: path → blob URL ---
 const imageCache = new Map<string, string>();
@@ -23,7 +24,9 @@ function resolveImageSrc(path: string): string | null {
   if (imageLoading.has(path)) return null;
 
   imageLoading.add(path);
+  dbg(`image: readFile ${path}`);
   readFile(path).then((data) => {
+    dbg(`image: loaded ${path} (${data.length}b)`);
     const ext = path.split(".").pop()?.toLowerCase() || "png";
     const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : `image/${ext}`;
     const blob = new Blob([data], { type: mime });
@@ -32,7 +35,8 @@ function resolveImageSrc(path: string): string | null {
     if (decorationView) {
       decorationView.dispatch({ effects: imageLoadedEffect.of(null) });
     }
-  }).catch(() => {
+  }).catch((e) => {
+    dbg(`image: FAILED ${path}: ${String(e)}`);
     imageLoading.delete(path);
   });
   return null;
@@ -119,7 +123,7 @@ class SketchArrowWidget extends WidgetType {
     const span = document.createElement("span");
     span.className = "cm-arrow-widget";
     // Drawn pointing down; rotated for the other directions
-    span.innerHTML = `<svg viewBox="0 0 28 40" fill="none" stroke="#f28b82" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(${ARROW_ROTATION[this.dir]}deg)"><path d="M14 3 C 13.4 7, 14.5 10, 14 15"/><path d="M5 21 C 8.5 25, 12 30.5, 14 37 C 15.5 31, 19.5 25.5, 23 20.5"/></svg>`;
+    span.innerHTML = `<svg viewBox="0 0 28 40" fill="none" stroke="#ff5f1f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(${ARROW_ROTATION[this.dir]}deg)"><path d="M14 3 C 13.4 7, 14.5 10, 14 15"/><path d="M5 21 C 8.5 25, 12 30.5, 14 37 C 15.5 31, 19.5 25.5, 23 20.5"/></svg>`;
     return span;
   }
 
@@ -178,6 +182,42 @@ class ImageWidget extends WidgetType {
     return this.src === other.src && this.alt === other.alt;
   }
 }
+
+// --- Image decorations (StateField: block widgets may not come from plugins) ---
+
+function buildImageDecorations(state: EditorState): DecorationSet {
+  const decs: Range<Decoration>[] = [];
+  const { head } = state.selection.main;
+  syntaxTree(state).iterate({
+    enter(node) {
+      if (node.name !== "Image") return;
+      if (!isPresentationMode() && head >= node.from && head <= node.to) return;
+      const m = state.sliceDoc(node.from, node.to).match(/^!\[([^\]]*)\]\(([^)]*)\)$/);
+      if (!m) return;
+      let src: string | null = m[2];
+      if (!src.startsWith("http") && !src.startsWith("data:")) {
+        const folder = getFolderPath();
+        src = folder ? resolveImageSrc(src.startsWith("/") ? src : `${folder}/${src}`) : null;
+      }
+      if (!src) return;
+      // Hide the markdown text, collapse the line, render image as block widget
+      decs.push(Decoration.replace({}).range(node.from, node.to));
+      const imgLine = state.doc.lineAt(node.from);
+      decs.push(Decoration.line({ class: "cm-image-source" }).range(imgLine.from));
+      decs.push(
+        Decoration.widget({ widget: new ImageWidget(src, m[1]), block: true, side: 1 })
+          .range(imgLine.from)
+      );
+    },
+  });
+  return Decoration.set(decs, true);
+}
+
+export const imageDecorations = StateField.define<DecorationSet>({
+  create: buildImageDecorations,
+  update: (_value, tr) => buildImageDecorations(tr.state),
+  provide: (f) => EditorView.decorations.from(f),
+});
 
 // --- Helpers ---
 
@@ -362,42 +402,8 @@ function buildDecorations(view: EditorView): DecorationSet {
             }
           }
 
-          // --- Images ---
-          else if (node.name === "Image") {
-            if (!cursorOn(view, node.from, node.to)) {
-              const full = view.state.sliceDoc(node.from, node.to);
-              const m = full.match(/^!\[([^\]]*)\]\(([^)]*)\)$/);
-              if (m) {
-                let src: string | null = m[2];
-                if (src.startsWith("http") || src.startsWith("data:")) {
-                  // external/data URLs used as-is
-                } else {
-                  const folder = getFolderPath();
-                  if (folder) {
-                    const abs = src.startsWith("/") ? src : `${folder}/${src}`;
-                    src = resolveImageSrc(abs);
-                  } else {
-                    src = null;
-                  }
-                }
-                if (src) {
-                  // Hide the markdown text
-                  decs.push(Decoration.replace({}).range(node.from, node.to));
-                  // Collapse the now-empty source line
-                  const imgLine = view.state.doc.lineAt(node.from);
-                  decs.push(Decoration.line({ class: "cm-image-source" }).range(imgLine.from));
-                  // Render image as a block widget (outside .cm-line, avoids contenteditable centering)
-                  decs.push(
-                    Decoration.widget({
-                      widget: new ImageWidget(src, m[1]),
-                      block: true,
-                      side: 1,
-                    }).range(imgLine.from)
-                  );
-                }
-              }
-            }
-          }
+          // (Images are handled by imageDecorations — block widgets are not
+          // allowed from view plugins, only from state fields)
 
           // --- Horizontal rule ---
           else if (node.name === "HorizontalRule") {

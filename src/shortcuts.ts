@@ -2,6 +2,7 @@ import { EditorView, keymap } from "@codemirror/view";
 import { Compartment } from "@codemirror/state";
 import { openFile, saveFile, saveFileAs } from "./fileio";
 import { newPad, newPadBefore, nextPad, prevPad } from "./pads";
+import { dbg } from "./debug";
 
 const STORAGE_KEY = "markdownpad-shortcuts";
 const FONT_SIZE_KEY = "markdownpad-font-size";
@@ -184,8 +185,9 @@ export function isCentered(): boolean {
 
 export function updateCenterPadding(view: EditorView) {
   const content = view.contentDOM;
-  const shouldCenter = centered || view.dom.classList.contains("presentation-mode");
+  const shouldCenter = centered || document.documentElement.classList.contains("presentation-mode");
   if (!shouldCenter) {
+    dbg("centerPadding: OFF (not centered/presentation)");
     content.style.paddingTop = "";
     content.style.paddingBottom = "";
     return;
@@ -197,6 +199,7 @@ export function updateCenterPadding(view: EditorView) {
   const textH = last.getBoundingClientRect().bottom - first.getBoundingClientRect().top;
   const viewportH = view.scrollDOM.clientHeight;
   const pad = `${Math.max(0, Math.round((viewportH - textH) / 2))}px`;
+  dbg(`centerPadding: textH=${textH.toFixed(0)} viewportH=${viewportH} pad=${pad} (was ${content.style.paddingTop || "unset"})`);
   // Only update if changed to avoid infinite geometry loop
   if (content.style.paddingTop !== pad) {
     content.style.paddingTop = pad;
@@ -225,6 +228,11 @@ export function setExtraBindings(bindings: typeof extraKeyBindings) {
 
 // Compartment for hot-swappable keymap
 export const shortcutCompartment = new Compartment();
+
+// History lives in a compartment so pad switches can reset undo state —
+// otherwise Cmd+Z after switching pads reverts the buffer to the previous
+// pad's content and autosave writes it into the wrong file
+export const historyCompartment = new Compartment();
 
 export function loadBindings(): Record<string, string> {
   try {

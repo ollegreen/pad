@@ -1,5 +1,7 @@
 import { EditorView } from "@codemirror/view";
-import { isCentered, updateCenterPadding } from "./shortcuts";
+import { Transaction } from "@codemirror/state";
+import { history } from "@codemirror/commands";
+import { isCentered, updateCenterPadding, historyCompartment } from "./shortcuts";
 import { open } from "@tauri-apps/plugin-dialog";
 import {
   readTextFile,
@@ -14,6 +16,7 @@ import {
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { listen } from "@tauri-apps/api/event";
 import { modePrefix } from "./presentation";
+import { dbg } from "./debug";
 
 const FOLDER_KEY = "pad-folder";
 const PAD_KEY = "pad-current-pad";
@@ -30,6 +33,7 @@ let saveTimer: ReturnType<typeof setTimeout> | null = null;
 let editorView: EditorView | null = null;
 let padOpLock = false;
 let suppressDirty = false;
+let lastLoadedContent = "";
 const deletedStack: { content: string; position: number }[] = [];
 
 export function isSuppressingDirty(): boolean {
@@ -74,11 +78,35 @@ async function scanPads(): Promise<void> {
   totalPads = count;
 }
 
+// Replace the buffer without polluting undo history, then reset history so
+// Cmd+Z can't resurrect another pad's content into this one
+function setBuffer(content: string): void {
+  if (!editorView) return;
+  suppressDirty = true;
+  try {
+    editorView.dispatch({
+      changes: { from: 0, to: editorView.state.doc.length, insert: content },
+      annotations: Transaction.addToHistory.of(false),
+    });
+    editorView.dispatch({ effects: historyCompartment.reconfigure([]) });
+    editorView.dispatch({ effects: historyCompartment.reconfigure(history()) });
+  } finally {
+    // A crash mid-dispatch must never leave dirty-tracking stuck off
+    suppressDirty = false;
+  }
+  lastLoadedContent = content;
+  if (isCentered() || document.documentElement.classList.contains("presentation-mode")) {
+    updateCenterPadding(editorView);
+  }
+}
+
 async function loadPad(n: number): Promise<void> {
+  dbg(`loadPad(${n}) cur=${currentPadNum} total=${totalPads}`);
   if (!editorView || !folderPath) return;
 
   const path = padPath(n);
   if (!(await exists(path))) {
+    dbg(`loadPad(${n}) MISSING ${path}`);
     if (n !== 1) {
       await loadPad(1);
       return;
@@ -87,13 +115,7 @@ async function loadPad(n: number): Promise<void> {
   }
 
   const content = await readTextFile(path);
-
-  suppressDirty = true;
-  editorView.dispatch({
-    changes: { from: 0, to: editorView.state.doc.length, insert: content },
-  });
-  suppressDirty = false;
-  if (isCentered() || editorView.dom.classList.contains("presentation-mode")) updateCenterPadding(editorView);
+  setBuffer(content);
 
   currentPadNum = n;
   localStorage.setItem(PAD_KEY, String(n));
@@ -103,6 +125,7 @@ async function loadPad(n: number): Promise<void> {
 export async function saveCurrent(): Promise<void> {
   if (!folderPath || !editorView) return;
   const content = editorView.state.doc.toString();
+  dbg(`saveCurrent -> pad_${currentPadNum} (${content.length}b)`);
   await writeTextFile(padPath(currentPadNum), content);
 }
 
@@ -423,6 +446,7 @@ export async function undoDeletePad(): Promise<void> {
 }
 
 export async function nextPad(): Promise<void> {
+  dbg(`nextPad cur=${currentPadNum} total=${totalPads} lock=${padOpLock}`);
   await withLock(async () => {
     if (currentPadNum >= totalPads) return;
     await saveCurrent();
@@ -432,12 +456,33 @@ export async function nextPad(): Promise<void> {
 }
 
 export async function prevPad(): Promise<void> {
+  dbg(`prevPad cur=${currentPadNum} total=${totalPads} lock=${padOpLock}`);
   await withLock(async () => {
     if (currentPadNum <= 1) return;
     await saveCurrent();
     clearSaveTimer();
     await loadPad(currentPadNum - 1);
   });
+}
+
+// Re-read the current pad when the window regains focus. Another instance
+// (e.g. dev app alongside the installed one) may have changed the file;
+// only reload when the buffer has no local edits, so nothing is lost.
+export async function refreshFromDisk(): Promise<void> {
+  if (!folderPath || !editorView || padOpLock) return;
+  const n = currentPadNum;
+  const loaded = lastLoadedContent;
+  if (editorView.state.doc.toString() !== loaded) return; // local edits — keep them
+  const path = padPath(n);
+  if (!(await exists(path))) return;
+  const disk = await readTextFile(path);
+  // Bail if navigation or edits happened while we were reading
+  if (padOpLock || n !== currentPadNum || loaded !== lastLoadedContent) return;
+  if (editorView.state.doc.toString() !== loaded) return;
+  if (disk !== loaded) {
+    dbg(`refreshFromDisk: pad_${n} changed on disk, reloading buffer`);
+    setBuffer(disk);
+  }
 }
 
 // --- Pad Set Operations ---
@@ -577,6 +622,8 @@ export async function initPadSystem(view: EditorView): Promise<void> {
     const savedPad = parseInt(localStorage.getItem(PAD_KEY) || "1", 10);
     const target = savedPad > 0 && savedPad <= totalPads ? savedPad : 1;
     await loadPad(target);
+    // Focus the editor so keyboard shortcuts work without clicking first
+    view.focus();
   } else {
     showWelcome();
   }
