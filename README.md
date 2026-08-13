@@ -1,6 +1,6 @@
 <p align="center"><strong>Pad</strong> is a minimal markdown editor and presentation app for macOS.</p>
 <p align="center">
-  <img src="screenshots/1_notes.png" alt="Taking notes in Pad" width="80%" />
+  <img src="screenshots/0_landing_pic.png" alt="Pad" width="80%" />
 </p>
 
 ---
@@ -24,6 +24,10 @@ a few things worth knowing:
 - **customizable** — accent colors, fonts, rebindable shortcuts
 - **auto-save** — your work is always saved
 - **tiny footprint** — ~5 MB native app
+
+![Taking notes in Pad](screenshots/1_notes.png)
+
+*[placeholder — a line about everyday note-taking: checkboxes, live markdown, no chrome]*
 
 ![Presenting your notes](screenshots/2_presentation_of_notes.png)
 
