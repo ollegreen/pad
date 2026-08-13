@@ -5,25 +5,25 @@
 
 ---
 
-## 📦 Install
+## Quickstart
 
-**[Download the latest .dmg here](https://github.com/ollegreen/pad/releases/latest)**, open it, and drag Pad into Applications. That's it.
+**[download the latest .dmg here](https://github.com/ollegreen/pad/releases/latest)**, open it, drag Pad into Applications. that's it.
 
-A few things worth knowing:
+a few things worth knowing:
 
-- **Apple Silicon Macs only** (any Mac from 2021 or later with an M-series chip). On an Intel Mac, build from source below instead.
-- **First launch:** macOS will warn that Pad is from an unidentified developer. Right-click the app → **Open** → **Open**. You only need to do this once. (Pad is unsigned — signing requires a paid Apple developer account.)
-- The .dmg is a stable release, so it can lag behind the newest features. Build from source if you want the latest.
+- **Apple Silicon Macs only** (any Mac from 2021 or later with an M-chip). on an Intel Mac, build from source below instead.
+- **first launch:** macOS will complain that Pad is from an unidentified developer. right-click the app → **Open** → **Open**. you only need to do this once (Pad is unsigned — signing requires a paid Apple developer account).
+- the .dmg is a stable release so it can lag behind the newest features. build from source if you want the latest.
 
-## 🐱 Features
+## Features
 
-- **Distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
-- **Presentation mode** — your pads become fullscreen slides with `Cmd+P`
-- **AI-native** — pads are plain markdown files. Make a few slides in your style, then let your AI of choice write new decks following that structure — most of the work automates itself
-- **Multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
-- **Customizable** — accent colors, fonts, rebindable shortcuts
-- **Auto-save** — your work is always saved
-- **Tiny footprint** — ~5 MB native app
+- **distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
+- **presentation mode** — your pads become fullscreen slides with `Cmd+P`
+- **AI-native** — pads are plain markdown files. make a few slides in your style, then let your AI of choice write new decks following that structure — most of the work automates itself
+- **multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
+- **customizable** — accent colors, fonts, rebindable shortcuts
+- **auto-save** — your work is always saved
+- **tiny footprint** — ~5 MB native app
 
 ![Presenting your notes](screenshots/2_presentation_of_notes.png)
 
@@ -37,7 +37,7 @@ A few things worth knowing:
 
 *[placeholder — a line about drawing quick diagrams and the laser highlighter while presenting]*
 
-## ⌨️ Shortcuts (reprogrammable in settings)
+## Shortcuts (reprogrammable in settings)
 
 | Shortcut | Action |
 |---|---|
@@ -51,19 +51,19 @@ A few things worth knowing:
 | `Cmd++/−` | Font size |
 | `Cmd+,` | Settings |
 
-## 🛠 Build from source
+## Build from source
 
-For the very latest version (or an Intel Mac). Open Terminal (find it with Cmd+Space → type "Terminal") and paste:
+for the very latest version (or an Intel Mac). open Terminal (Cmd+Space → type "Terminal") and paste:
 
-```
+```shell
 curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
 ```
 
-The script installs its own tools (Homebrew, Rust, Node.js, pnpm) if you don't have them, builds the app, and copies it to Applications. Expect it to take several minutes the first time — it's compiling a whole app. macOS may also ask to install its command line developer tools along the way; say yes.
+the script installs its own tools (Homebrew, Rust, Node.js, pnpm) if you don't have them, builds the app and copies it to Applications. takes a few minutes the first time — it's compiling a whole app. macOS might ask to install its command line developer tools along the way, just say yes.
 
-Prefer to do it by hand? Requires [Rust](https://rustup.rs/), Node.js, and pnpm:
+prefer doing it by hand? requires [Rust](https://rustup.rs/), Node.js and pnpm:
 
-```
+```shell
 git clone https://github.com/ollegreen/pad.git
 cd pad
 pnpm install
@@ -71,7 +71,7 @@ pnpm tauri build --bundles app
 cp -r src-tauri/target/release/bundle/macos/Pad.app /Applications/
 ```
 
-For development with hot reload: `pnpm tauri dev`
+for development with hot reload: `pnpm tauri dev`
 
 ## Stack (for the little geeks out there)
 
