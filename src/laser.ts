@@ -89,32 +89,48 @@ function render() {
     .filter((s) => s.length > 0);
 
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
   ctx.shadowColor = `rgba(${COLOR}, 0.8)`;
   ctx.shadowBlur = 8;
+  ctx.fillStyle = `rgb(${COLOR})`;
 
+  // Each stroke is a single filled ribbon (width tapers with point age) so no
+  // pixel is painted twice — per-segment strokes left bright dots where round
+  // caps and shadows overlapped.
   for (const stroke of strokes) {
-    for (let i = 1; i < stroke.length; i++) {
-      const p = stroke[i];
-      // 1 → fresh, 0 → about to disappear; linear fade, gentle width taper
-      const life = 1 - (now - p.t) / POINT_LIFETIME_MS;
-      ctx.strokeStyle = `rgba(${COLOR}, ${life})`;
-      ctx.lineWidth = BASE_WIDTH * (0.35 + 0.65 * life);
-      ctx.beginPath();
-      ctx.moveTo(stroke[i - 1].x, stroke[i - 1].y);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
-    }
-    // Bright head dot on the freshest point
     const head = stroke[stroke.length - 1];
-    if (now - head.t < 100) {
-      ctx.fillStyle = `rgba(${COLOR}, 1)`;
-      ctx.beginPath();
-      ctx.arc(head.x, head.y, BASE_WIDTH * 0.7, 0, Math.PI * 2);
-      ctx.fill();
+    ctx.beginPath();
+    if (stroke.length > 1) {
+      const left: number[][] = [];
+      const right: number[][] = [];
+      for (let i = 0; i < stroke.length; i++) {
+        const p = stroke[i];
+        const a = stroke[i - 1] ?? p;
+        const b = stroke[i + 1] ?? p;
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        const len = Math.hypot(dx, dy) || 1;
+        dx /= len;
+        dy /= len;
+        const w = halfWidth(now, p);
+        left.push([p.x - dy * w, p.y + dx * w]);
+        right.push([p.x + dy * w, p.y - dx * w]);
+      }
+      ctx.moveTo(left[0][0], left[0][1]);
+      for (const [x, y] of left) ctx.lineTo(x, y);
+      for (let i = right.length - 1; i >= 0; i--) ctx.lineTo(right[i][0], right[i][1]);
+      ctx.closePath();
     }
+    // Round head cap (same fill pass, so the overlap doesn't double-paint)
+    ctx.moveTo(head.x, head.y);
+    ctx.arc(head.x, head.y, halfWidth(now, head), 0, Math.PI * 2);
+    ctx.fill();
   }
 
   raf = requestAnimationFrame(render);
+}
+
+// Half-width of the ribbon at a point: fresh → BASE_WIDTH/2, expiring → ~0
+function halfWidth(now: number, p: Point) {
+  const life = Math.max(0, 1 - (now - p.t) / POINT_LIFETIME_MS);
+  return (BASE_WIDTH / 2) * (0.15 + 0.85 * life);
 }
