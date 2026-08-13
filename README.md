@@ -22,9 +22,10 @@ A few things worth knowing:
 
 - **Distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
 - **Presentation mode** — your pads become fullscreen slides with `Cmd+P`
+- **AI-native** — pads are plain markdown files. Make a few slides in your style, then let your AI of choice write new decks following that structure — most of the work automates itself
 - **Multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
-- **Auto-save** — your work is always saved
 - **Customizable** — accent colors, fonts, rebindable shortcuts
+- **Auto-save** — your work is always saved
 - **Tiny footprint** — ~5 MB native app
 
 ![Taking notes in Pad](screenshots/1_notes.png)
