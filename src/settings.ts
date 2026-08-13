@@ -29,12 +29,29 @@ const CODE_FONT_OPTIONS: { label: string; value: string }[] = [
   { label: "Chalkboard", value: "'Chalkboard SE', cursive" },
 ];
 
+const CODEBLOCK_FONT_KEY = "pad-codeblock-font";
+const CODEBLOCK_FONT_OPTIONS: { label: string; value: string }[] = [
+  { label: "Menlo", value: "Menlo, monospace" },
+  { label: "Monaco", value: "Monaco, monospace" },
+  { label: "Courier New", value: "'Courier New', monospace" },
+  { label: "Fira Code", value: "'Fira Code', monospace" },
+  { label: "System Mono", value: "monospace" },
+];
+
 export function getCodeFont(): string {
   return localStorage.getItem(CODE_FONT_KEY) || CODE_FONT_OPTIONS[0].value;
 }
 
 export function applyCodeFont() {
   document.documentElement.style.setProperty("--pad-code-font", getCodeFont());
+}
+
+export function getCodeBlockFont(): string {
+  return localStorage.getItem(CODEBLOCK_FONT_KEY) || CODEBLOCK_FONT_OPTIONS[0].value;
+}
+
+export function applyCodeBlockFont() {
+  document.documentElement.style.setProperty("--pad-codeblock-font", getCodeBlockFont());
 }
 
 export function getAccentColor(): string {
@@ -52,8 +69,8 @@ export function applyAccentColor() {
 export function applyFont() {
   const font = getFont();
   document.documentElement.style.setProperty("--pad-font", font);
-  // Force override on all CM6 content elements
-  document.querySelectorAll(".cm-content, .cm-editor, .cm-line").forEach((el) => {
+  // Force override on CM6 containers (not .cm-line — code block lines set their own font)
+  document.querySelectorAll(".cm-content, .cm-editor").forEach((el) => {
     (el as HTMLElement).style.setProperty("font-family", font, "important");
   });
 }
@@ -88,6 +105,52 @@ function formatKeyForDisplay(key: string): string {
     .replace("Shift", "\u21E7")
     .replace("Alt", "\u2325")
     .replace(/-/g, " ");
+}
+
+function addFontSection(
+  card: HTMLElement,
+  title: string,
+  options: { label: string; value: string }[],
+  storageKey: string,
+  current: string,
+  apply: () => void,
+  btnStyle = "",
+) {
+  const heading = document.createElement("div");
+  heading.textContent = title;
+  heading.style.cssText = `
+    font-size: 16px; font-weight: bold; margin-bottom: 14px;
+    padding-bottom: 12px; border-bottom: 1px solid #3a3a3a;
+  `;
+  card.appendChild(heading);
+
+  const row = document.createElement("div");
+  row.style.cssText = "display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;";
+
+  for (const opt of options) {
+    const btn = document.createElement("div");
+    const isSelected = current === opt.value;
+    btn.textContent = opt.label;
+    btn.style.cssText = `
+      padding: 8px 12px; border-radius: 6px; cursor: pointer;
+      font-family: ${opt.value}; font-size: 13px;
+      background: ${isSelected ? "#3a3a3a" : "#1e1e1e"};
+      border: 1px solid ${isSelected ? "#666" : "#2a2a2a"};
+      color: #d4d4d4; transition: background 0.15s, border-color 0.15s;
+      ${btnStyle}
+    `;
+    btn.addEventListener("click", () => {
+      localStorage.setItem(storageKey, opt.value);
+      apply();
+      row.querySelectorAll("div").forEach((b, i) => {
+        const sel = options[i].value === opt.value;
+        (b as HTMLElement).style.background = sel ? "#3a3a3a" : "#1e1e1e";
+        (b as HTMLElement).style.borderColor = sel ? "#666" : "#2a2a2a";
+      });
+    });
+    row.appendChild(btn);
+  }
+  card.appendChild(row);
 }
 
 function render(view: EditorView) {
@@ -144,79 +207,10 @@ function render(view: EditorView) {
   }
   card.appendChild(accentRow);
 
-  // --- Font section ---
-  const fontTitle = document.createElement("div");
-  fontTitle.textContent = "Font";
-  fontTitle.style.cssText = `
-    font-size: 16px; font-weight: bold; margin-bottom: 14px;
-    padding-bottom: 12px; border-bottom: 1px solid #3a3a3a;
-  `;
-  card.appendChild(fontTitle);
-
-  const fontRow = document.createElement("div");
-  fontRow.style.cssText = "display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;";
-
-  const currentFont = getFont();
-  for (const opt of FONT_OPTIONS) {
-    const btn = document.createElement("div");
-    const isSelected = currentFont === opt.value;
-    btn.textContent = opt.label;
-    btn.style.cssText = `
-      padding: 8px 12px; border-radius: 6px; cursor: pointer;
-      font-family: ${opt.value}; font-size: 13px;
-      background: ${isSelected ? "#3a3a3a" : "#1e1e1e"};
-      border: 1px solid ${isSelected ? "#666" : "#2a2a2a"};
-      color: #d4d4d4; transition: background 0.15s, border-color 0.15s;
-    `;
-    btn.addEventListener("click", () => {
-      localStorage.setItem(FONT_KEY, opt.value);
-      applyFont();
-      fontRow.querySelectorAll("div").forEach((b, i) => {
-        const sel = FONT_OPTIONS[i].value === opt.value;
-        (b as HTMLElement).style.background = sel ? "#3a3a3a" : "#1e1e1e";
-        (b as HTMLElement).style.borderColor = sel ? "#666" : "#2a2a2a";
-      });
-    });
-    fontRow.appendChild(btn);
-  }
-  card.appendChild(fontRow);
-
-  // --- Code font section ---
-  const codeFontTitle = document.createElement("div");
-  codeFontTitle.textContent = "Code Font";
-  codeFontTitle.style.cssText = `
-    font-size: 16px; font-weight: bold; margin-bottom: 14px;
-    padding-bottom: 12px; border-bottom: 1px solid #3a3a3a;
-  `;
-  card.appendChild(codeFontTitle);
-
-  const codeFontRow = document.createElement("div");
-  codeFontRow.style.cssText = "display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;";
-
-  const currentCodeFont = getCodeFont();
-  for (const opt of CODE_FONT_OPTIONS) {
-    const btn = document.createElement("div");
-    const isSelected = currentCodeFont === opt.value;
-    btn.textContent = opt.label;
-    btn.style.cssText = `
-      padding: 8px 12px; border-radius: 6px; cursor: pointer;
-      font-family: ${opt.value}; font-size: 22px;
-      background: ${isSelected ? "#3a3a3a" : "#1e1e1e"};
-      border: 1px solid ${isSelected ? "#666" : "#2a2a2a"};
-      color: #f28b82; transition: background 0.15s, border-color 0.15s;
-    `;
-    btn.addEventListener("click", () => {
-      localStorage.setItem(CODE_FONT_KEY, opt.value);
-      applyCodeFont();
-      codeFontRow.querySelectorAll("div").forEach((b, i) => {
-        const sel = CODE_FONT_OPTIONS[i].value === opt.value;
-        (b as HTMLElement).style.background = sel ? "#3a3a3a" : "#1e1e1e";
-        (b as HTMLElement).style.borderColor = sel ? "#666" : "#2a2a2a";
-      });
-    });
-    codeFontRow.appendChild(btn);
-  }
-  card.appendChild(codeFontRow);
+  addFontSection(card, "Font", FONT_OPTIONS, FONT_KEY, getFont(), applyFont);
+  addFontSection(card, "Code Font", CODE_FONT_OPTIONS, CODE_FONT_KEY, getCodeFont(), applyCodeFont,
+    "font-size: 22px; color: #f28b82;");
+  addFontSection(card, "Code Block Font", CODEBLOCK_FONT_OPTIONS, CODEBLOCK_FONT_KEY, getCodeBlockFont(), applyCodeBlockFont);
 
   // --- Shortcuts section ---
   const title = document.createElement("div");

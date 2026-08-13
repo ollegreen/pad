@@ -66,9 +66,25 @@ export const padTheme = EditorView.theme(
       borderLeft: "2px solid #3a3a3a",
       paddingLeft: "10px",
     },
+    // Inline code pill (mark decoration on InlineCode nodes; the highlighter's
+    // tags.monospace is unstyled so fenced code text stays plain)
+    ".cm-inline-code": {
+      fontFamily: "var(--pad-code-font, 'Comic Sans MS', cursive)",
+      color: "#ff5f1f",
+      display: "inline-block",
+      border: "0.35em solid transparent",
+      borderImageSource: `url("data:image/svg+xml,${inlineCodePillSvg}")`,
+      borderImageSlice: "35",
+      borderImageRepeat: "round",
+      padding: "0 0.45em",
+      margin: "0.45em 0",
+    },
     // Code block line decoration
     ".cm-codeblock-line": {
       backgroundColor: "var(--pad-code-bg, #2d2d2d)",
+      fontFamily: "var(--pad-codeblock-font, Menlo, monospace)",
+      paddingLeft: "10px",
+      paddingRight: "10px",
     },
     // Excalidraw-style arrow widget (from `->` / `u` / `d` / `l` / `r`)
     ".cm-arrow-widget": {
@@ -187,7 +203,6 @@ export const padHighlighting = syntaxHighlighting(
     { tag: tags.strong, fontWeight: "bold", color: "var(--pad-text, #ffffff)" },
     { tag: tags.emphasis, fontStyle: "italic", color: "var(--pad-text, #ffffff)" },
     { tag: tags.strikethrough, textDecoration: "line-through", color: "#808080" },
-    { tag: tags.monospace, fontFamily: "var(--pad-code-font, 'Comic Sans MS', cursive)", color: "#ff5f1f", display: "inline-block", border: "0.35em solid transparent", borderImageSource: `url("data:image/svg+xml,${inlineCodePillSvg}")`, borderImageSlice: "35", borderImageRepeat: "round", padding: "0 0.45em", margin: "0.45em 0" },
     { tag: tags.link, color: "#e8912d" },
     { tag: tags.url, color: "#e8912d" },
     { tag: tags.quote, color: "var(--pad-text, #ffffff)" },
@@ -198,6 +213,8 @@ export const padHighlighting = syntaxHighlighting(
     { tag: tags.comment, color: "var(--pad-syn-comment, #6a9955)" },
     { tag: tags.string, color: "var(--pad-syn-string, #ce9178)" },
     { tag: tags.keyword, color: "var(--pad-syn-keyword, #569cd6)" },
-    { tag: tags.number, color: "var(--pad-syn-number, #b5cea8)" },
+    { tag: [tags.number, tags.bool, tags.atom], color: "var(--pad-syn-number, #b5cea8)" },
+    { tag: [tags.function(tags.variableName), tags.function(tags.propertyName)], color: "var(--pad-syn-func, #dcdcaa)" },
+    { tag: [tags.className, tags.typeName], color: "var(--pad-syn-type, #4ec9b0)" },
   ])
 );

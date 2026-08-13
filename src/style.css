@@ -240,6 +240,8 @@ html, body, #editor {
   --pad-syn-string: #ce9178;
   --pad-syn-keyword: #569cd6;
   --pad-syn-number: #b5cea8;
+  --pad-syn-func: #dcdcaa;
+  --pad-syn-type: #4ec9b0;
 }
 
 /* Code block rounded corners */
@@ -270,6 +272,8 @@ html, body, #editor {
   --pad-syn-string: #a31515;
   --pad-syn-keyword: #0000ff;
   --pad-syn-number: #098658;
+  --pad-syn-func: #795e26;
+  --pad-syn-type: #267f99;
   background-color: #ffffff !important;
   color: #1e1e1e !important;
 }

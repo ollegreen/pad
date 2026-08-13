@@ -326,14 +326,16 @@ function buildDecorations(view: EditorView): DecorationSet {
             }
           }
 
-          // --- Inline code: arrows for `->`/`u`/`d`/`l`/`r`, else hide backticks ---
+          // --- Inline code: arrows for `->`/`u`/`d`/`l`/`r`, else pill + hide backticks ---
           else if (node.name === "InlineCode") {
-            if (!cursorOn(view, node.from, node.to)) {
-              const text = view.state.sliceDoc(node.from, node.to);
-              const arrowDir = ARROW_CODES[text.slice(1, -1)];
-              if (arrowDir !== undefined && text.startsWith("`") && text.endsWith("`")) {
-                decs.push(Decoration.replace({ widget: new SketchArrowWidget(arrowDir) }).range(node.from, node.to));
-              } else if (text.startsWith("`") && text.endsWith("`") && text.length > 2) {
+            const text = view.state.sliceDoc(node.from, node.to);
+            const arrowDir = ARROW_CODES[text.slice(1, -1)];
+            const editing = cursorOn(view, node.from, node.to);
+            if (!editing && arrowDir !== undefined && text.startsWith("`") && text.endsWith("`")) {
+              decs.push(Decoration.replace({ widget: new SketchArrowWidget(arrowDir) }).range(node.from, node.to));
+            } else {
+              decs.push(Decoration.mark({ class: "cm-inline-code" }).range(node.from, node.to));
+              if (!editing && text.startsWith("`") && text.endsWith("`") && text.length > 2) {
                 decs.push(Decoration.replace({}).range(node.from, node.from + 1));
                 decs.push(Decoration.replace({}).range(node.to - 1, node.to));
               }

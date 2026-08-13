@@ -25,7 +25,7 @@ import {
   scheduleCenterUpdate,
   historyCompartment,
 } from "./shortcuts";
-import { openSettingsModal, applyAccentColor, applyFont, applyCodeFont } from "./settings";
+import { openSettingsModal, applyAccentColor, applyFont, applyCodeFont, applyCodeBlockFont } from "./settings";
 import { initPadSystem, scheduleSave, isSuppressingDirty, deletePad, undoDeletePad, nextPad, prevPad, refreshFromDisk } from "./pads";
 import {
   readOnlyCompartment,
@@ -86,6 +86,7 @@ applyFontSize(view);
 applyAccentColor();
 applyFont();
 applyCodeFont();
+applyCodeBlockFont();
 if (isCentered()) {
   document.documentElement.classList.add("centered-mode");
 }
