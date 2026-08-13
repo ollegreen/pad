@@ -8,7 +8,15 @@
   A minimal markdown editor and presentation app for macOS.
 </p>
 
-<!-- screenshots go here -->
+## 📦 Install
+
+**[Download the latest .dmg here](https://github.com/ollegreen/pad/releases/latest)**, open it, and drag Pad into Applications. That's it.
+
+A few things worth knowing:
+
+- **Apple Silicon Macs only** (any Mac from 2021 or later with an M-series chip). On an Intel Mac, build from source below instead.
+- **First launch:** macOS will warn that Pad is from an unidentified developer. Right-click the app → **Open** → **Open**. You only need to do this once. (Pad is unsigned — signing requires a paid Apple developer account.)
+- The .dmg is a stable release, so it can lag behind the newest features. Build from source if you want the latest.
 
 ## 🐱 Features
 
@@ -17,19 +25,25 @@
 - **Multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
 - **Auto-save** — your work is always saved
 - **Customizable** — accent colors, fonts, rebindable shortcuts
-- **Tiny footprint** — ~5 MB native app, built with Tauri 2
+- **Tiny footprint** — ~5 MB native app
 
-## 📦 Install
+![Taking notes in Pad](screenshots/1_notes.png)
 
-One command — clones, builds from source, and copies to `/Applications`:
+*[placeholder — a line about everyday note-taking: checkboxes, live markdown, no chrome]*
 
-```
-curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
-```
+![Presenting your notes](screenshots/2_presentation_of_notes.png)
 
-Requires macOS with git. The script installs Homebrew, Rust, Node.js, and pnpm if needed.
+*[placeholder — a line about hitting Cmd+P and your notes becoming a slide]*
 
-## ⌨️ Shortcuts
+![A title slide](screenshots/3_slide_page_w_titles.png)
+
+*[placeholder — a line about title slides / how headings turn into big centered text]*
+
+![Sketching and laser pointer](screenshots/4_simple_diagrams_and_highligter.png)
+
+*[placeholder — a line about drawing quick diagrams and the laser highlighter while presenting]*
+
+## ⌨️ Shortcuts (reprogrammable in settings)
 
 | Shortcut | Action |
 |---|---|
@@ -43,19 +57,28 @@ Requires macOS with git. The script installs Homebrew, Rust, Node.js, and pnpm i
 | `Cmd++/−` | Font size |
 | `Cmd+,` | Settings |
 
-All shortcuts are rebindable in settings.
-
 ## 🛠 Build from source
+
+For the very latest version (or an Intel Mac). Open Terminal (find it with Cmd+Space → type "Terminal") and paste:
+
+```
+curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
+```
+
+The script installs its own tools (Homebrew, Rust, Node.js, pnpm) if you don't have them, builds the app, and copies it to Applications. Expect it to take several minutes the first time — it's compiling a whole app. macOS may also ask to install its command line developer tools along the way; say yes.
+
+Prefer to do it by hand? Requires [Rust](https://rustup.rs/), Node.js, and pnpm:
 
 ```
 git clone https://github.com/ollegreen/pad.git
 cd pad
 pnpm install
-pnpm tauri build
+pnpm tauri build --bundles app
+cp -r src-tauri/target/release/bundle/macos/Pad.app /Applications/
 ```
 
 For development with hot reload: `pnpm tauri dev`
 
-## Built with
+## Stack (for the little geeks out there)
 
-TypeScript, [CodeMirror 6](https://codemirror.net/), [Tauri 2](https://v2.tauri.app/), Vite
+TypeScript, [CodeMirror 6](https://codemirror.net/), [Tauri 2](https://v2.tauri.app/), Vite. Tauri uses the web view already built into macOS instead of bundling a whole browser engine like Electron apps do — that's why Pad is ~5 MB while your average Electron app is 100+ MB.
