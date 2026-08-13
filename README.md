@@ -41,6 +41,10 @@ a few things worth knowing:
 
 *[placeholder — a line about drawing quick diagrams and the laser highlighter while presenting]*
 
+![Pasting screenshots](screenshots/5_pasting_screenshots.png)
+
+*[placeholder — a line about pasting images straight into your notes]*
+
 ## Shortcuts (reprogrammable in settings)
 
 | Shortcut | Action |
