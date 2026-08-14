@@ -33,7 +33,7 @@ Markdown headings: we got it.
 
 ![A title slide](screenshots/3_slide_page_w_titles.png)
 
-And if you're in presentation mode: your mouse becomes a highlighter, which is nice to show what you're chatting about
+You can make excalidraw style diagrams with "``" blocks. so "`development`" becomes what you see below. And if you're in presentation mode: your mouse becomes a highlighter, which is nice to show what you're chatting about
 
 ![Sketching and laser pointer](screenshots/4_simple_diagrams_and_highligter.png)
 
