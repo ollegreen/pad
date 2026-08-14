@@ -1,4 +1,4 @@
-<p align="center"><strong>Pad</strong> is a minimal markdown editor and presentation app for macOS.</p>
+<p align="center"><strong>Pad</strong> is a minimal markdown editor and presentation app for M-chip macs.</p>
 <p align="center">
   <img src="screenshots/0_landing_pic.png" alt="Pad" width="80%" />
 </p>
@@ -7,43 +7,41 @@
 
 ## Quickstart
 
-**[download the latest .dmg here](https://github.com/ollegreen/pad/releases/latest)**, open it, drag Pad into Applications. that's it.
-
-a few things worth knowing:
-
-- **Apple Silicon Macs only** (any Mac from 2021 or later with an M-chip). on an Intel Mac, build from source below instead.
-- **first launch:** macOS will complain that Pad is from an unidentified developer. right-click the app → **Open** → **Open**. you only need to do this once (Pad is unsigned — signing requires a paid Apple developer account).
-- the .dmg is a stable release so it can lag behind the newest features. build from source if you want the latest.
+**[download the app here](https://github.com/ollegreen/pad/releases/latest)**, drag Pad into Applications.
 
 ## Features
 
 - **distraction-free editor** — live markdown rendering as you type (headings, checkboxes, bold, italic, links, code blocks)
 - **presentation mode** — your pads become fullscreen slides with `Cmd+P`
-- **AI-native** — pads are plain markdown files. make a few slides in your style, then let your AI of choice write new decks following that structure — most of the work automates itself
+- **AI-native** — sounds lame but since the pads are plain markdown files -> just make a few slides in your style you like -> then show it to codex/cc write new decks following that style. throw in a little dictation on top and i've ran through a deck in like 2 min that's 90% done. love it for automating boring slides tasks.
 - **multi-pad workflow** — create pads with `Cmd+N`, hop between them with `Alt+←/→`
-- **customizable** — accent colors, fonts, rebindable shortcuts
-- **auto-save** — your work is always saved
+- **customizable** — accent colors, change fonts, rebinde shortcuts to what you like -> all for getting it to your own liking
+- **auto-save** — your work is always saved. the only challenge atm is if you delete something: it goes in the bin. so if you want to be safe: is a repo and commit your stuff so you got some versioning to your slides (as i've lost a deck i spent a lot of time manually fixing and then managed to delete and yikes that was some effort to get back)
 - **tiny footprint** — ~5 MB native app
+
+---
+
+Taking notes are as simple as writing in TextEdit, but with markdown formatting. nice for jotting down notes. 
 
 ![Taking notes in Pad](screenshots/1_notes.png)
 
-*[placeholder — a line about everyday note-taking: checkboxes, live markdown, no chrome]*
+if you want to present your notes: just `cmd + p` takes you to a centered presentation style mode, making it neat to go from notes to slides in an instant. Also: turns your arrow keys into moving left and right on slides. neat. 
 
 ![Presenting your notes](screenshots/2_presentation_of_notes.png)
 
-*[placeholder — a line about hitting Cmd+P and your notes becoming a slide]*
+Markdown headings: we got it. 
 
 ![A title slide](screenshots/3_slide_page_w_titles.png)
 
-*[placeholder — a line about title slides / how headings turn into big centered text]*
+And if you're in presentation mode: your mouse becomes a highlighter, which is nice to show what you're chatting about
 
 ![Sketching and laser pointer](screenshots/4_simple_diagrams_and_highligter.png)
 
-*[placeholder — a line about drawing quick diagrams and the laser highlighter while presenting]*
+`cmd + v` of a screenshot; got you bro
 
 ![Pasting screenshots](screenshots/5_pasting_screenshots.png)
 
-*[placeholder — a line about pasting images straight into your notes]*
+# enjoy m8
 
 ## Shortcuts (reprogrammable in settings)
 
@@ -59,27 +57,6 @@ a few things worth knowing:
 | `Cmd++/−` | Font size |
 | `Cmd+,` | Settings |
 
-## Build from source
-
-for the very latest version (or an Intel Mac). open Terminal (Cmd+Space → type "Terminal") and paste:
-
-```shell
-curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
-```
-
-the script installs its own tools (Homebrew, Rust, Node.js, pnpm) if you don't have them, builds the app and copies it to Applications. takes a few minutes the first time — it's compiling a whole app. macOS might ask to install its command line developer tools along the way, just say yes.
-
-prefer doing it by hand? requires [Rust](https://rustup.rs/), Node.js and pnpm:
-
-```shell
-git clone https://github.com/ollegreen/pad.git
-cd pad
-pnpm install
-pnpm tauri build --bundles app
-cp -r src-tauri/target/release/bundle/macos/Pad.app /Applications/
-```
-
-for development with hot reload: `pnpm tauri dev`
 
 ## Stack (for the little geeks out there)
 
