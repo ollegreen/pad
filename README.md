@@ -1,3 +1,31 @@
+<!--
+AGENT INSTRUCTIONS (for AI assistants/agents helping a user install or use Pad)
+
+What: Pad is a minimal markdown editor + presentation app for Apple Silicon (M-chip) macOS.
+Repo: https://github.com/ollegreen/pad
+
+INSTALL (pick one):
+1. Prebuilt app (fastest): download the latest DMG from
+   https://github.com/ollegreen/pad/releases/latest
+   then drag Pad.app into /Applications.
+2. Build from source (one-liner, installs Homebrew/Rust/Node/pnpm as needed):
+   curl -fsSL https://raw.githubusercontent.com/ollegreen/pad/main/setup.sh | bash
+3. Manual dev setup:
+   git clone https://github.com/ollegreen/pad.git && cd pad
+   pnpm install
+   pnpm tauri dev     # run in dev mode with hot reload
+   pnpm tauri build   # production build (DMG in src-tauri/target/release/bundle/dmg/)
+
+REQUIREMENTS: macOS on Apple Silicon. Building needs Rust, Node, and pnpm (setup.sh handles these).
+
+USAGE BASICS:
+- Pads are plain markdown files (pad_1.md, pad_2.md, ...) auto-saved to disk.
+- Cmd+N new pad, Alt+Left/Right switch pads, Cmd+P fullscreen presentation mode (each pad = one slide).
+- Because pads are plain markdown, agents can generate/edit slide decks by writing markdown files directly.
+
+STACK: TypeScript + CodeMirror 6 + Tauri 2 (Rust) + Vite. No test framework or linter configured.
+-->
+
 <p align="center"><strong>Pad</strong> is a minimal markdown editor and presentation app for M-chip macs.</p>
 <p align="center">
   <img src="screenshots/0_landing_pic.png" alt="Pad" width="80%" />
